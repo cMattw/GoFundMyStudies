@@ -8,10 +8,10 @@ GoFundMyStudies is a platform that connects students seeking financial support w
 
 ## Project Structure
 GoFundMyStudies/
-├── index.html # Main landing page
-├── browse.html # Browse campaigns page
-├── signup.html # User signup page
-└── style.css # Stylesheet for all pages
+├── index.html # Main landing page  
+├── browse.html # Browse campaigns page  
+├── signup.html # User signup page  
+└── style.css # Stylesheet for all pages  
 
 
 ## Pages
@@ -31,11 +31,11 @@ This project is deployed using GitHub Pages. Visit the live site at: https://cma
 
 ## Authors
 
-John Matthew Agoncillo
-Clark Eugene Dimarucut
-Hale Styx Igmasin
-John Paul Ceballos
-Jasper Capili
+- John Matthew Agoncillo
+- Clark Eugene Dimarucut
+- Hale Styx Igmasin
+- John Paul Ceballos
+- Jasper Capili
 
 ## Course
 
