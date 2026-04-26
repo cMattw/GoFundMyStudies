@@ -7,7 +7,7 @@ A crowdfunding platform designed specifically for students to fund their educati
 GoFundMyStudies is a platform that connects students seeking financial support with a community of supporters.
 
 ## Project Structure
-GoFundMyStudies/
+GoFundMyStudies/  
 ├── index.html # Main landing page  
 ├── browse.html # Browse campaigns page  
 ├── signup.html # User signup page  
