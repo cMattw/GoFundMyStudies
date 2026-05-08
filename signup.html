@@ -3,9 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Signup - Centered</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Simple background without the moving circle */
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            overflow: hidden;
+            background-image: url(./assets/bg.jpg);
+                background-size: cover;
+                background-position: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px; /* Limits form width */
+            padding: 20px;
+        }
+
+        /* Form Styling */
+        .form-wrapper {
+            background-color: var(--color-light);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            text-align: center;
+            display: none; /* Hidden by default */
+        }
+
+        /* Show the correct form based on parent class */
+        .container.sign-in-mode .sign-in-form,
+        .container.sign-up-mode .sign-up-form {
+            display: block;
+        }
+
+        h2 {
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            background-color: var(--color-input);
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--color-primary);
+        }
+
+        button {
+            cursor: pointer;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            border: none;
+            background-color: var(--color-secondary);
+            color: var(--color-dark);
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--color-secondary-dark);
+        }
+
+        p {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .pointer {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    
+
+    <div id="container" class="container sign-in-mode">
+        
+        <!-- SIGN IN FORM -->
+        <div class="form-wrapper sign-in-form">
+            <h2>Welcome</h2>
+            <div class="input-group">
+                <input type="text" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password">
+            </div>
+            <button>Sign In</button>
+            <p>Don't have an account? <span class="pointer" onclick="toggle()">Sign up here</span></p>
+        </div>
+
+        <!-- SIGN UP FORM -->
+        <div class="form-wrapper sign-up-form">
+            <h2>Join Us</h2>
+            <div class="input-group">
+                <input type="text" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Email">
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password">
+            </div>
+            <button>Sign Up</button>
+            <p>Already have an account? <span class="pointer" onclick="toggle()">Sign in here</span></p>
+        </div>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        
+        function toggle() {
+            if (container.classList.contains('sign-in-mode')) {
+                container.classList.remove('sign-in-mode');
+                container.classList.add('sign-up-mode');
+            } else {
+                container.classList.remove('sign-up-mode');
+                container.classList.add('sign-in-mode');
+            }
+        }
+    </script>
 </body>
 </html>
