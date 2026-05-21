@@ -107,29 +107,33 @@
         <!-- SIGN IN FORM -->
         <div class="form-wrapper sign-in-form">
             <h2>Welcome</h2>
-            <div class="input-group">
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Password">
-            </div>
-            <button>Sign In</button>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <input type="text" id="loginUsername" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
             <p>Don't have an account? <span class="pointer" onclick="toggle()">Sign up here</span></p>
         </div>
 
         <!-- SIGN UP FORM -->
         <div class="form-wrapper sign-up-form">
             <h2>Join Us</h2>
-            <div class="input-group">
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="input-group">
-                <input type="email" placeholder="Email">
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Password">
-            </div>
-            <button>Sign Up</button>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <div class="input-group">
+                    <input type="text" id="signupUsername" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="signupEmail" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
             <p>Already have an account? <span class="pointer" onclick="toggle()">Sign in here</span></p>
         </div>
 
@@ -137,16 +141,81 @@
 
     <script>
         const container = document.getElementById('container');
+
+// toggle function
+function toggle() {
+    if (container.classList.contains('sign-in-mode')) {
+        container.classList.remove('sign-in-mode');
+        container.classList.add('sign-up-mode');
+    } else {
+        container.classList.remove('sign-up-mode');
+        container.classList.add('sign-in-mode');
+    }
+}
+
+// Handle User Registration (Sign Up)
+function handleSignup(event) {
+    event.preventDefault(); // Prevents the page from refreshing
+
+    const username = document.getElementById('signupUsername').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+
+    // Basic Validation
+    if (password.length < 8) {
+        alert("Password must be at least 8 characters long.");
+        return;
+    }
+
+    // Check if user already exists in localStorage
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const userExists = existingUsers.some(user => user.username.toLowerCase() === username.toLowerCase());
+
+    if (userExists) {
+        alert("This username is already taken. Please choose another one.");
+        return;
+    }
+
+    // Save user object
+    const newUser = { username, email, password };
+    existingUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(existingUsers));
+
+    alert("Registration successful! You can now log in.");
+    
+    // Clear registration fields and switch back to Sign In mode
+    document.getElementById('signupForm').reset();
+    toggle(); 
+}
+
+// Handle User Authentication (Sign In)
+function handleLogin(event) {
+    event.preventDefault(); // Prevents the page from refreshing
+
+    const usernameInput = document.getElementById('loginUsername').value.trim();
+    const passwordInput = document.getElementById('loginPassword').value;
+
+    // Get users from localStorage
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Find matching user credentials
+    const foundUser = existingUsers.find(user => 
+        user.username.toLowerCase() === usernameInput.toLowerCase() && 
+        user.password === passwordInput
+    );
+
+    if (foundUser) {
+        alert(`Welcome back, ${foundUser.username}! Redirecting to homepage...`);
         
-        function toggle() {
-            if (container.classList.contains('sign-in-mode')) {
-                container.classList.remove('sign-in-mode');
-                container.classList.add('sign-up-mode');
-            } else {
-                container.classList.remove('sign-up-mode');
-                container.classList.add('sign-in-mode');
-            }
-        }
+        // Store current session state
+        localStorage.setItem('currentUser', JSON.stringify(foundUser));
+        
+        // Redirect to index.html (Main home page)
+        window.location.href = "index.html";
+    } else {
+        alert("Invalid username or password. Please try again.");
+    }
+}
     </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
             <h2>Welcome to GoFundMyStudies!</h2>
             <p>GoFundMyStudies is the premier crowdfunding platform dedicated to fueling the collective ambitions of educational organizations. Whether your group is raising funds for a community outreach project, a competitive club trip, or a campus-wide scholarship initiative, we provide the tools to help your organization reach its goals.</p>
             <p>Be part of our founding community. Start your campaign today or support fellow students in their educational pursuits.</p>
-            <a href="signup.html" class="signup">Get Started</a>
+            <a href="signup.html" class="signup" id="getStartedBtn">Get Started</a>
             <a href="browse.html" class="secondary-btn">Browse Campaigns</a>
         </div>
     </div>
@@ -152,3 +152,21 @@
     </footer>
 </body>
 </html>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check if there is a logged-in user in localStorage
+            const currentUser = localStorage.getItem('currentUser');
+            const getStartedBtn = document.getElementById('getStartedBtn');
+
+            if (currentUser) {
+                const userData = JSON.parse(currentUser);
+                
+                // Redirect them straight to browse campaigns if they are logged in
+                getStartedBtn.href = "browse.html";
+                getStartedBtn.textContent = "Go to Dashboard";
+                
+            }
+        });
+    </script>
+</body>
