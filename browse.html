@@ -3,23 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoFundMyStudies</title>
+    <title>Browse</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .content-container {
+            display: flex;
+            gap: 40px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-top: 50px;
+            align-items: flex-start;
+        }
+
+        .feature-card {
+            flex: 1; 
+            background-color: var(--color-surface);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .feature-card:hover, .feature-card:focus {
+            outline: none;
+            background-color: #b0b0b0;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .cards-grid {
+            flex: 1.6; 
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 25px;
+        }
+
+        .mini-card {
+            background-color: var(--color-surface);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column; 
+            gap: 15px;
+            padding: 20px; 
+            text-align: left;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .mini-card:hover, .mini-card:focus {
+            outline: none;
+            background-color: #d5d5d5;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+        }
+
+        .picture-placeholder {
+            background-color: #555555;
+            width: 100%;
+        }
+
+        .feature-card .picture-placeholder {
+            height: 280px;
+        }
+
+        .mini-card .picture-placeholder {
+            height: 120px; 
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-circle {
+            background-color: #757575;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .feature-card .avatar-circle {
+            width: 60px;
+            height: 60px;
+        }
+
+        .mini-card .avatar-circle {
+            width: 40px; 
+            height: 40px;
+        }
+
+        .profile-details h2 {
+            font-weight: normal;
+            margin-bottom: 4px;
+        }
+
+        .feature-card .profile-details h2 {
+            font-size: 1.1rem;
+        }
+
+        .mini-card .profile-details h2 {
+            font-size: 0.95rem; 
+        }
+
+        .profile-details p {
+            color: #444444;
+        }
+
+        .feature-card .profile-details p {
+            font-size: 0.95rem;
+        }
+
+        .mini-card .profile-details p {
+            font-size: 0.85rem; 
+        }
+
+        @media (max-width: 950px) {
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .cards-grid {
+                gap: 20px;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
+
     <div class="header">
         <h1>GoFundMyStudies</h1>
-        <div class="login">
-            <p>Login</p>
-        <div class="browse">
-            <p>Browse</p>
-        </div>
     </div>
-    <div class="content">
-        <h2>Welcome to GoFundMyStudies!</h2>
-        <p>Your one-stop platform for crowdfunding your educational journey. Whether you're looking to fund your college tuition, study abroad program, or any educational expenses, GoFundMyStudies is here to help you achieve your academic goals.</p>
-        <p>We understand that the path to a degree is often paved with financial hurdles that can feel overwhelming. Our mission is to ensure that no student has to set aside their textbooks or abandon their dreams because of a tuition bill. By providing a dedicated space designed specifically for the academic community, we bridge the gap between where you are now and where you want to be.</p>
-        <a href="signup.html" class="signup">Get Started</a>
-    </div>
+
+    <main class="content-container">
+        
+        <a href="#" class="feature-card">
+            <div class="picture-placeholder"></div>
+            <div class="profile-section">
+                <div class="avatar-circle"></div>
+                <div class="profile-details">
+                    <h2>Feature Card Title</h2>
+                    <p>Feature details</p>
+                </div>
+            </div>
+        </a>
+
+        <section class="cards-grid">
+            
+            <a href="#" class="mini-card">
+                <div class="picture-placeholder"></div>
+                <div class="profile-section">
+                    <div class="avatar-circle"></div>
+                    <div class="profile-details">
+                        <h2>Card 1 Title</h2>
+                        <p>Card 1 details</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="mini-card">
+                <div class="picture-placeholder"></div>
+                <div class="profile-section">
+                    <div class="avatar-circle"></div>
+                    <div class="profile-details">
+                        <h2>Card 2 Title</h2>
+                        <p>Card 2 details</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="mini-card">
+                <div class="picture-placeholder"></div>
+                <div class="profile-section">
+                    <div class="avatar-circle"></div>
+                    <div class="profile-details">
+                        <h2>Card 3 Title</h2>
+                        <p>Card 3 details</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="mini-card">
+                <div class="picture-placeholder"></div>
+                <div class="profile-section">
+                    <div class="avatar-circle"></div>
+                    <div class="profile-details">
+                        <h2>Card 4 Title</h2>
+                        <p>Card 4 details</p>
+                    </div>
+                </div>
+            </a>
+
+        </section>
+    </main>
+
 </body>
 </html>
