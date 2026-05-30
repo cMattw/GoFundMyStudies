@@ -164,90 +164,98 @@
     </div>
 
     <script>
-            const container = document.getElementById('container');
+        const container = document.getElementById('container');
 
-            function toggle() {
-                document.getElementById('loginError').style.display = 'none';
-                document.getElementById('signupError').style.display = 'none';
+        // Toggle between the Sign In and Sign Up forms
+        function toggle() {
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('signupError').style.display = 'none';
 
-                if (container.classList.contains('sign-in-mode')) {
-                    container.classList.remove('sign-in-mode');
-                    container.classList.add('sign-up-mode');
-                } else {
-                    container.classList.remove('sign-up-mode');
-                    container.classList.add('sign-in-mode');
-                }
+            if (container.classList.contains('sign-in-mode')) {
+                container.classList.remove('sign-in-mode');
+                container.classList.add('sign-up-mode');
+            } else {
+                container.classList.remove('sign-up-mode');
+                container.classList.add('sign-in-mode');
+            }
+        }
+
+        // Handle the Sign Up form submission
+        function handleSignup(event) {
+            event.preventDefault(); 
+
+            const username = document.getElementById('signupUsername').value.trim();
+            const org = document.getElementById('signupOrg').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            
+            const signupError = document.getElementById('signupError');
+            signupError.style.display = 'none';
+
+            // Reject passwords shorter than 8 characters
+            if (password.length < 8) {
+                signupError.style.color = "red";
+                signupError.textContent = "Password must be at least 8 characters long.";
+                signupError.style.display = 'block';
+                return;
             }
 
-            function handleSignup(event) {
-                event.preventDefault(); 
+            // Check if the username is already taken
+            const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const userExists = existingUsers.some(user => user.username.toLowerCase() === username.toLowerCase());
 
-                const username = document.getElementById('signupUsername').value.trim();
-                const org = document.getElementById('signupOrg').value.trim();
-                const email = document.getElementById('signupEmail').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                
-                const signupError = document.getElementById('signupError');
-                signupError.style.display = 'none';
+            if (userExists) {
+                signupError.style.color = "red";
+                signupError.textContent = "This username is already taken. Please choose another one.";
+                signupError.style.display = 'block';
+                return;
+            }
 
-                if (password.length < 8) {
-                    signupError.style.color = "red";
-                    signupError.textContent = "Password must be at least 8 characters long.";
-                    signupError.style.display = 'block';
-                    return;
-                }
+            // Save the new user to localStorage and switch to the Sign In form
+            const newUser = { username, org, email, password };
+            existingUsers.push(newUser);
+            localStorage.setItem('users', JSON.stringify(existingUsers));
 
-                const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-                const userExists = existingUsers.some(user => user.username.toLowerCase() === username.toLowerCase());
+            document.getElementById('signupForm').reset();
+            toggle();
+            
+            // Show a success message on the Sign In form
+            const loginError = document.getElementById('loginError');
+            loginError.style.color = "green";
+            loginError.textContent = "Account created successfully! Please sign in.";
+            loginError.style.display = 'block';
+        }
 
-                if (userExists) {
-                    signupError.style.color = "red";
-                    signupError.textContent = "This username is already taken. Please choose another one.";
-                    signupError.style.display = 'block';
-                    return;
-                }
+        // Handle the Sign In form submission
+        function handleLogin(event) {
+            event.preventDefault();
 
-                const newUser = { username, org, email, password };
-                existingUsers.push(newUser);
-                localStorage.setItem('users', JSON.stringify(existingUsers));
+            const usernameInput = document.getElementById('loginUsername').value.trim();
+            const orgInput = document.getElementById('loginOrg').value.trim();
+            const passwordInput = document.getElementById('loginPassword').value;
+            
+            const loginError = document.getElementById('loginError');
+            loginError.style.display = 'none';
 
-                document.getElementById('signupForm').reset();
-                toggle(); 
-                
-                const loginError = document.getElementById('loginError');
-                loginError.style.color = "green";
-                loginError.textContent = "Account created successfully! Please sign in.";
+            // Look through saved users for a matching username, organization, and password
+            const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const foundUser = existingUsers.find(user => 
+                user.username.toLowerCase() === usernameInput.toLowerCase() && 
+                user.org.toLowerCase() === orgInput.toLowerCase() &&
+                user.password === passwordInput
+            );
+
+            if (foundUser) {
+                // Save the logged-in user to localStorage and redirect to the home page
+                localStorage.setItem('currentUser', JSON.stringify(foundUser));
+                window.location.href = "index.html";
+            } else {
+                // Show an error if no matching user was found
+                loginError.style.color = "red";
+                loginError.textContent = "Invalid username, organization, or password. Please try again.";
                 loginError.style.display = 'block';
             }
-
-            function handleLogin(event) {
-                event.preventDefault(); 
-
-                const usernameInput = document.getElementById('loginUsername').value.trim();
-                const orgInput = document.getElementById('loginOrg').value.trim();
-                const passwordInput = document.getElementById('loginPassword').value;
-                
-                const loginError = document.getElementById('loginError');
-                loginError.style.display = 'none';
-
-                const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-                const foundUser = existingUsers.find(user => 
-                    user.username.toLowerCase() === usernameInput.toLowerCase() && 
-                    user.org.toLowerCase() === orgInput.toLowerCase() &&
-                    user.password === passwordInput
-                );
-
-                if (foundUser) {
-                    localStorage.setItem('currentUser', JSON.stringify(foundUser));
-                    
-                    window.location.href = "index.html";
-                } else {
-                    loginError.style.color = "red";
-                    loginError.textContent = "Invalid username, organization, or password. Please try again.";
-                    loginError.style.display = 'block';
-                }
-            }
-        </script>
+        }
+    </script>
 </body>
 </html>

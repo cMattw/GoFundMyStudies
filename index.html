@@ -149,21 +149,20 @@
             <p>&copy; 2026 GoFundMyStudies. All rights reserved.</p>
         </div>
     </footer>
-</body>
-</html>
 
-<script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Check if a user is currently logged in
             const currentUser = localStorage.getItem('currentUser');
             const getStartedBtn = document.getElementById('getStartedBtn');
 
+            // If a user is logged in, change the "Get Started" button to go to the dashboard instead
             if (currentUser) {
                 const userData = JSON.parse(currentUser);
-                
                 getStartedBtn.href = "dashboard.html";
                 getStartedBtn.textContent = "Go to Dashboard";
-                
             }
         });
     </script>
 </body>
+</html>

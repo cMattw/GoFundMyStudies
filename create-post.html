@@ -208,12 +208,14 @@
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script>
+        // If no user is logged in, block access and redirect to the sign-in page
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser) {
             alert("Please log in first to publish an operational post.");
             window.location.href = "signup.html";
         }
 
+        // Set up the Quill rich text editor with a toolbar for formatting options
         var quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Explain what you need the funds for...',
@@ -233,6 +235,7 @@
         const imagePreview = document.getElementById('imagePreview');
         const uploaderPlaceholder = document.getElementById('uploaderPlaceholder');
 
+        // When the user picks an image, show a live preview inside the upload box
         imageInput.addEventListener('change', function() {
             const file = this.files[0];
             const uploaderBox = document.querySelector('.image-uploader-box');
@@ -240,6 +243,7 @@
             if (file) {
                 const reader = new FileReader();
                 reader.addEventListener('load', function() {
+                    // Display the chosen image and hide the placeholder icon
                     imagePreview.setAttribute('src', this.result);
                     imagePreview.style.display = 'block';
                     uploaderPlaceholder.style.display = 'none';
@@ -248,6 +252,7 @@
                 });
                 reader.readAsDataURL(file);
             } else {
+                // If no file is selected, reset the upload box back to its default state
                 imagePreview.style.display = 'none';
                 uploaderPlaceholder.style.display = 'flex';
                 uploaderBox.style.background = '#fafafa';
@@ -255,14 +260,16 @@
             }
         });
 
+        // Handle form submission when the user clicks "Publish Post"
         document.getElementById('postForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Stop the page from refreshing on submit
             
             const title = document.getElementById('postTitle').value;
-            const textPreview = quill.getText().trim(); 
-            const richTextDetails = quill.root.innerHTML; 
+            const textPreview = quill.getText().trim();
+            const richTextDetails = quill.root.innerHTML;
             const imageFile = imageInput.files[0];
 
+            // Build the new campaign object with all relevant data
             const newCampaign = {
                 id: Date.now(),
                 title: title,
@@ -273,14 +280,16 @@
                 status: "Live"
             };
 
+            // Save the campaign to localStorage, then redirect to the browse page
             const saveAndRedirect = (postToSave) => {
                 let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
-                posts.unshift(postToSave);
+                posts.unshift(postToSave); 
                 localStorage.setItem('studyPosts', JSON.stringify(posts));
                 alert("Campaign published successfully!");
                 window.location.href = 'browse.html';
             };
 
+            // If an image was uploaded, convert it to base64 before saving
             if (imageFile) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -289,6 +298,7 @@
                 };
                 reader.readAsDataURL(imageFile);
             } else {
+                // No image provided, save the campaign with an empty image field
                 newCampaign.image = "";
                 saveAndRedirect(newCampaign);
             }

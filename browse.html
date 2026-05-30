@@ -143,13 +143,18 @@
     </main>
 
     <script>
-            document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function() {
             const container = document.getElementById('contentContainer');
+
+            // Load saved posts and users from localStorage
             let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
             const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Build a quick lookup map
             const userMap = {};
             users.forEach(u => { userMap[u.username.toLowerCase()] = u; });
 
+            // If there are no posts, show a placeholder message
             if (posts.length === 0) {
                 container.innerHTML = `
                     <div class="empty-message">
@@ -158,17 +163,23 @@
                     </div>
                 `;
             } else {
+                // Loop through each post and build a card HTML string
                 let cardsHTML = '';
                 posts.forEach(post => {
+                    // Use the post image as a background if it exists
                     const imageStyle = post.image 
                         ? `background-image: url('${post.image}');` 
                         : '';
 
+                    // Look up author details using the userMap
                     const authorUser = userMap[(post.author || '').toLowerCase()];
                     const authorName = post.author || 'Unknown';
                     const authorOrg  = authorUser ? authorUser.org : '';
-                    const initial    = authorName.charAt(0).toUpperCase();
 
+                    // Get the first letter of the author's name for the avatar circle
+                    const initial = authorName.charAt(0).toUpperCase();
+
+                    // Build each card as a link to the post's details page
                     cardsHTML += `
                         <a href="post-details.html?id=${post.id}" class="mini-card">
                             <div class="picture-placeholder" style="${imageStyle}"></div>
@@ -183,6 +194,8 @@
                         </a>
                     `;
                 });
+
+                // Inject all generated cards into the page
                 container.innerHTML = cardsHTML;
             }
         });

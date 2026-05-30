@@ -559,6 +559,7 @@
     </div>
 
     <script>
+        // Handle tab switching: deactivate all tabs and panels, then activate the clicked one
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -569,18 +570,23 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
+            // Load the currently logged-in user from localStorage
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            // If no user is found, block access and redirect to the sign-in page
             if (!currentUser) {
                 alert("Access denied. Please sign in first.");
                 window.location.href = "signup.html";
                 return;
             }
 
+            // Populate the welcome banner with the user's username and organization
             document.getElementById('welcomeHeading').textContent =
                 `Welcome back, ${currentUser.username}!`;
             document.getElementById('welcomeOrg').textContent =
                 currentUser.org ? `${currentUser.org}` : "No organization set";
 
+            // Pre-fill the profile settings form fields with the current user's saved data
             document.getElementById('profileUsername').value = currentUser.username || "";
             document.getElementById('profileOrg').value      = currentUser.org      || "";
             document.getElementById('profileEmail').value    = currentUser.email    || "";
@@ -590,11 +596,15 @@
 
             if (currentUser.avatar) setAvatar(currentUser.avatar);
 
+            // Render the campaigns table with only the posts authored by the current user
             function renderCampaigns() {
                 const tbody  = document.getElementById('postsTableBody');
+
+                // Load all posts and filter down to those belonging to this user
                 const posts  = JSON.parse(localStorage.getItem('studyPosts')) || [];
                 const mine   = posts.filter(p => p.author === currentUser.username);
 
+                // Show a prompt to create a campaign if the user has none yet
                 if (mine.length === 0) {
                     tbody.innerHTML = `
                         <tr>
@@ -604,9 +614,12 @@
                             </td>
                         </tr>`;
                 } else {
+                    // Build a table row for each campaign with its title, amount raised, and status
                     tbody.innerHTML = mine.map(p => {
                         const raised = Number(p.totalRaised || 0).toFixed(2);
                         const status = p.status || "Live";
+
+                        // Apply the correct CSS class based on whether the campaign is live or a draft
                         const cls    = status.toLowerCase() === 'live' ? 'status-live' : 'status-draft';
                         return `
                             <tr>
@@ -621,11 +634,15 @@
             }
             renderCampaigns();
 
+            // Render the notifications panel with donation alerts for the current user
             function renderNotifications() {
                 const container = document.getElementById('notifContainer');
                 const dot       = document.getElementById('notifDot');
+
+                // Load saved notifications from localStorage
                 const notifs    = JSON.parse(localStorage.getItem('studyNotifications')) || [];
 
+                // If there are no notifications, hide the indicator dot and show a placeholder
                 if (notifs.length === 0) {
                     dot.style.display = 'none';
                     container.innerHTML = `
@@ -636,6 +653,7 @@
                             </div>
                         </div>`;
                 } else {
+                    // Show the indicator dot and render each notification with its message and timestamp
                     dot.style.display = 'inline-block';
                     container.innerHTML = notifs.map(n => `
                         <div class="notif-item">
@@ -646,16 +664,20 @@
             }
             renderNotifications();
 
+            // Handle profile info form submission: save updated fields to localStorage
             document.getElementById('infoForm').addEventListener('submit', function (e) {
                 e.preventDefault();
 
+                // Update the current user object with the new form values
                 currentUser.org      = document.getElementById('profileOrg').value.trim();
                 currentUser.email    = document.getElementById('profileEmail').value.trim();
                 currentUser.fullName = document.getElementById('profileFullName').value.trim();
 
+                // Persist the updated user to localStorage and sync to the users list
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 syncUser(currentUser);
 
+                // Reflect the changes in the welcome banner immediately
                 document.getElementById('welcomeOrg').textContent =
                     currentUser.org || "No organization set";
                 document.getElementById('avatarDisplayName').textContent =
@@ -664,6 +686,7 @@
                 alert("Profile saved successfully!");
             });
 
+            // Handle password change form submission with validation checks
             document.getElementById('securityForm').addEventListener('submit', function (e) {
                 e.preventDefault();
 
@@ -671,19 +694,25 @@
                 const next = document.getElementById('newPassword').value;
                 const conf = document.getElementById('confirmPassword').value;
 
+                // Verify the entered current password matches what's stored
                 if (curr !== currentUser.password) {
                     alert("Current password is incorrect.");
                     return;
                 }
+
+                // Enforce a minimum password length of 8 characters
                 if (next.length < 8) {
                     alert("New password must be at least 8 characters.");
                     return;
                 }
+
+                // Ensure the new password and confirmation field match
                 if (next !== conf) {
                     alert("Passwords do not match.");
                     return;
                 }
 
+                // Save the new password and sync to the users list
                 currentUser.password = next;
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 syncUser(currentUser);
@@ -691,15 +720,18 @@
                 this.reset();
             });
 
+            // Trigger the hidden file input when the avatar wrapper is clicked
             document.getElementById('avatarWrap').addEventListener('click', function () {
                 document.getElementById('profileImageInput').click();
             });
 
+            // Handle avatar image selection: read the file and save it as a base64 data URL
             document.getElementById('profileImageInput').addEventListener('change', function () {
                 const file = this.files[0];
                 if (!file) return;
                 const reader = new FileReader();
                 reader.onload = function (e) {
+                    // Display the new avatar and persist it to localStorage
                     setAvatar(e.target.result);
                     currentUser.avatar = e.target.result;
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -708,11 +740,13 @@
                 reader.readAsDataURL(file);
             });
 
+            // Handle logout: remove the current user session and redirect to sign-in
             document.getElementById('logoutBtn').addEventListener('click', function () {
                 localStorage.removeItem('currentUser');
                 window.location.href = "signup.html";
             });
 
+            // Show the avatar image and hide the default SVG placeholder
             function setAvatar(src) {
                 const img = document.getElementById('avatarImg');
                 const svg = document.getElementById('avatarSvg');
@@ -721,11 +755,15 @@
                 svg.style.display = 'none';
             }
 
+            // Sync updated user data back into the global users array in localStorage
             function syncUser(user) {
                 const users = JSON.parse(localStorage.getItem('users')) || [];
+
+                // Find the matching user entry by username (case-insensitive)
                 const idx   = users.findIndex(u =>
                     u.username.toLowerCase() === user.username.toLowerCase());
                 if (idx !== -1) {
+                    // Merge the updated fields into the existing user entry
                     users[idx] = { ...users[idx], ...user };
                     localStorage.setItem('users', JSON.stringify(users));
                 }
