@@ -6,19 +6,56 @@
     <title>Browse</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .content-container {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            padding: 20px 40px;
+            border-bottom: 2px solid #cccccc;
             display: flex;
-            gap: 40px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-create {
+            background-color: #555555;
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .btn-create:hover {
+            background-color: #333333;
+        }
+
+        .content-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
             padding: 40px;
             max-width: 1400px;
             margin: 0 auto;
-            margin-top: 50px;
-            align-items: flex-start;
+            margin-top: 70px;
+        }
+
+        .content-container.empty-state {
+            grid-template-columns: 1fr;
         }
 
         .feature-card {
-            flex: 1; 
-            background-color: var(--color-surface);
+            grid-column: 1;
+            grid-row: 1 / span 2;
+            
+            background-color: var(--color-surface, #bdbdbd);
             padding: 30px;
             display: flex;
             flex-direction: column;
@@ -30,6 +67,11 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
 
+        .content-container.empty-state .feature-card {
+            grid-column: auto;
+            grid-row: auto;
+        }
+
         .feature-card:hover, .feature-card:focus {
             outline: none;
             background-color: #b0b0b0;
@@ -37,15 +79,8 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        .cards-grid {
-            flex: 1.6; 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 25px;
-        }
-
         .mini-card {
-            background-color: var(--color-surface);
+            background-color: var(--color-surface, #e0e0e0);
             border-radius: 20px;
             display: flex;
             flex-direction: column; 
@@ -127,13 +162,14 @@
         }
 
         @media (max-width: 950px) {
-            .content-container {
-                flex-direction: column;
+            .content-container, .content-container.empty-state {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .cards-grid {
-                gap: 20px;
-                width: 100%;
+            .feature-card {
+                grid-column: auto;
+                grid-row: auto;
             }
         }
     </style>
@@ -142,11 +178,12 @@
 
     <div class="header">
         <h1>GoFundMyStudies</h1>
+        <a href="create-post.html" class="btn-create">+ Create a Post</a>
     </div>
 
-    <main class="content-container">
+    <main class="content-container" id="contentContainer">
         
-        <a href="#" class="feature-card">
+        <a href="#" class="feature-card" id="featureCard">
             <div class="picture-placeholder"></div>
             <div class="profile-section">
                 <div class="avatar-circle"></div>
@@ -156,55 +193,40 @@
                 </div>
             </div>
         </a>
-
-        <section class="cards-grid">
-            
-            <a href="#" class="mini-card">
-                <div class="picture-placeholder"></div>
-                <div class="profile-section">
-                    <div class="avatar-circle"></div>
-                    <div class="profile-details">
-                        <h2>Card 1 Title</h2>
-                        <p>Card 1 details</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="mini-card">
-                <div class="picture-placeholder"></div>
-                <div class="profile-section">
-                    <div class="avatar-circle"></div>
-                    <div class="profile-details">
-                        <h2>Card 2 Title</h2>
-                        <p>Card 2 details</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="mini-card">
-                <div class="picture-placeholder"></div>
-                <div class="profile-section">
-                    <div class="avatar-circle"></div>
-                    <div class="profile-details">
-                        <h2>Card 3 Title</h2>
-                        <p>Card 3 details</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="#" class="mini-card">
-                <div class="picture-placeholder"></div>
-                <div class="profile-section">
-                    <div class="avatar-circle"></div>
-                    <div class="profile-details">
-                        <h2>Card 4 Title</h2>
-                        <p>Card 4 details</p>
-                    </div>
-                </div>
-            </a>
-
-        </section>
+        
     </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const container = document.getElementById('contentContainer');
+            const featureCard = document.getElementById('featureCard');
+            let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
+
+            if (posts.length === 0) {
+                container.classList.add('empty-state');
+            } else {
+                container.classList.remove('empty-state');
+                
+                let cardsHTML = '';
+                posts.forEach(post => {
+                    cardsHTML += `
+                        <a href="#" class="mini-card">
+                            <div class="picture-placeholder"></div>
+                            <div class="profile-section">
+                                <div class="avatar-circle"></div>
+                                <div class="profile-details">
+                                    <h2>${post.title}</h2>
+                                    <p>${post.details}</p>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                featureCard.insertAdjacentHTML('afterend', cardsHTML);
+            }
+        });
+    </script>
 
 </body>
 </html>

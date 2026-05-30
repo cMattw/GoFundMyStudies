@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Post</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f7f9fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            max-width: 900px; 
+            margin: 50px auto; 
+            background: var(--color-white); 
+            padding: 40px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            margin-top: 100px;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: var(--color-dark);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group { 
+            margin-bottom: 20px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        label { 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+            color: var(--color-dark);
+            font-size: 0.95rem;
+        }
+
+        input, select { 
+            padding: 12px; 
+            border: 1px solid var(--color-border); 
+            border-radius: 6px; 
+            font-size: 1rem; 
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--color-input);
+        }
+
+        .image-uploader-box {
+            border: 2px dashed var(--color-border);
+            border-radius: 8px;
+            background: var(--color-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            width: 100%;
+            height: 250px; 
+            box-sizing: border-box;
+            overflow: hidden;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .image-uploader-box :hover {
+            border-color: var(--color-input);
+            background: var(--color-light);
+        }
+
+        .image-uploader-box input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .uploader-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--color-input);
+        }
+
+        .uploader-placeholder svg {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            fill: var(--color-input);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            border-radius: 6px;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .editor-container {
+            height: 250px;
+            background: var(--color-light);
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        .ql-toolbar {
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            background: var(--color-surface);
+        }
+
+        .checkbox-group {
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        button.submit-btn { 
+            padding: 14px;
+            background: var(--color-input); 
+            color: var(--color-button-alt); 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        
+        button.submit-btn:hover { 
+            background: var(--color-button-alt-hover); 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>GoFundMyStudies</h1>
+    </div>
+
+    <div class="form-container">
+        <h2>Start a New Fundraiser</h2>
+        
+        <form id="postForm">
+            <div class="form-grid">
+                
+                <div class="form-left">
+
+                    <div class="form-group">
+                        <label for="postTitle">Campaign Title</label>
+                        <input type="text" id="postTitle" required placeholder="e.g., Need funds for chemistry books">
+                    </div>
+                </div>
+
+                <div class="form-right">
+                    <div class="form-group">
+                        <label>Campaign Cover Image</label>
+                        <div class="image-uploader-box">
+                            <div class="uploader-placeholder" id="uploaderPlaceholder">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/>
+                                </svg>
+                                <span>SELECT IMAGE</span>
+                            </div>
+                            <img src="" alt="Preview" class="image-preview" id="imagePreview">
+                            <input type="file" id="imageInput" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group" style="margin-top: 25px;">
+                <label>Details / Description</label>
+                <div id="editor" class="editor-container"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Publish Post</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Explain what you need the funds for...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'align': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['blockquote', 'link', 'image', 'video', 'clean']
+                ]
+            }
+        });
+
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const uploaderPlaceholder = document.getElementById('uploaderPlaceholder');
+
+        imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        const uploaderBox = document.querySelector('.image-uploader-box');
+        
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.addEventListener('load', function() {
+                imagePreview.setAttribute('src', this.result);
+                imagePreview.style.display = 'block';
+                uploaderPlaceholder.style.display = 'none';
+                uploaderBox.style.background = '#222'; 
+                uploaderBox.style.borderColor = '#222';
+            });
+            
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.style.display = 'none';
+            uploaderPlaceholder.style.display = 'flex';
+            uploaderBox.style.background = '#fafafa';
+            uploaderBox.style.borderColor = '#ccc';
+        }
+        });
+
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const richTextDetails = quill.root.innerHTML;
+            const title = document.getElementById('postTitle').value;
+            const publishDate = document.getElementById('publishDate').value;
+            const allowComments = document.getElementById('allowComments').checked;
+            const imageFile = imageInput.files[0];
+
+            console.log("Form Submitted:", {
+                title,
+                publishDate,
+                allowComments,
+                richTextDetails,
+                imageFile
+            });
+
+            alert("Post ready for processing! (Check browser console for data package structural output)");
+        });
+    </script>
+</body>
+</html>
