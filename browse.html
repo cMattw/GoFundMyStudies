@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse</title>
+    <title>Browse - GoFundMyStudies</title>
     <link rel="stylesheet" href="style.css">
     <style>
         * {
@@ -12,18 +12,10 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-
-        .header {
-            padding: 20px 40px;
-            border-bottom: 2px solid #cccccc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        
         .btn-create {
-            background-color: #555555;
-            color: #ffffff;
+            background-color: var(--color-secondary);
+            color: var(--color-dark);
             padding: 12px 24px;
             text-decoration: none;
             border-radius: 8px;
@@ -34,84 +26,60 @@
         }
 
         .btn-create:hover {
-            background-color: #333333;
+            background-color: var(--color-secondary-dark);
         }
 
         .content-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
             padding: 40px;
             max-width: 1400px;
-            margin: 0 auto;
-            margin-top: 70px;
+            margin: 80px auto 0;
         }
 
-        .content-container.empty-state {
-            grid-template-columns: 1fr;
+        .empty-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 100px 20px;
+            background-color: var(--color-surface);
+            border-radius: 12px;
+            border: 2px dashed #ccc;
         }
 
-        .feature-card {
-            grid-column: 1;
-            grid-row: 1 / span 2;
-            
-            background-color: var(--color-surface, #bdbdbd);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-            text-decoration: none;
-            color: inherit;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-        }
-
-        .content-container.empty-state .feature-card {
-            grid-column: auto;
-            grid-row: auto;
-        }
-
-        .feature-card:hover, .feature-card:focus {
-            outline: none;
-            background-color: #b0b0b0;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        .empty-message h2 {
+            color: var(--color-dark);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
         }
 
         .mini-card {
-            background-color: var(--color-surface, #e0e0e0);
-            border-radius: 20px;
+            background-color: var(--color-light);
+            border-radius: 12px;
             display: flex;
             flex-direction: column; 
-            gap: 15px;
-            padding: 20px; 
+            gap: 20px;
+            padding: 25px;
             text-align: left;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-decoration: none;
             color: inherit;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .mini-card:hover, .mini-card:focus {
-            outline: none;
-            background-color: #d5d5d5;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+        .mini-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
         }
 
         .picture-placeholder {
-            background-color: #555555;
+            background-color: var(--color-muted);
             width: 100%;
-        }
-
-        .feature-card .picture-placeholder {
-            height: 280px;
-        }
-
-        .mini-card .picture-placeholder {
-            height: 120px; 
+            height: 250px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
         }
 
         .profile-section {
@@ -121,109 +89,102 @@
         }
 
         .avatar-circle {
-            background-color: #757575;
+            background-color: var(--color-primary);
             border-radius: 50%;
+            width: 50px;
+            height: 50px;
             flex-shrink: 0;
-        }
-
-        .feature-card .avatar-circle {
-            width: 60px;
-            height: 60px;
-        }
-
-        .mini-card .avatar-circle {
-            width: 40px; 
-            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-transform: uppercase;
         }
 
         .profile-details h2 {
-            font-weight: normal;
+            font-size: 1.25rem;
+            font-weight: bold;
             margin-bottom: 4px;
         }
 
-        .feature-card .profile-details h2 {
-            font-size: 1.1rem;
+        .profile-details .author-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 2px;
         }
 
-        .mini-card .profile-details h2 {
-            font-size: 0.95rem; 
+        .profile-details .author-org {
+            color: #888;
+            font-size: 0.82rem;
         }
 
         .profile-details p {
-            color: #444444;
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.4;
         }
 
-        .feature-card .profile-details p {
-            font-size: 0.95rem;
-        }
-
-        .mini-card .profile-details p {
-            font-size: 0.85rem; 
-        }
-
-        @media (max-width: 950px) {
-            .content-container, .content-container.empty-state {
+        @media (max-width: 500px) {
+            .content-container {
                 grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .feature-card {
-                grid-column: auto;
-                grid-row: auto;
             }
         }
     </style>
 </head>
 <body>
-
     <div class="header">
-        <h1>GoFundMyStudies</h1>
+        <h1><a href="index.html" style="color:inherit;text-decoration:none;">GoFundMyStudies</a></h1>
         <a href="create-post.html" class="btn-create">+ Create a Post</a>
     </div>
 
     <main class="content-container" id="contentContainer">
-        
-        <a href="#" class="feature-card" id="featureCard">
-            <div class="picture-placeholder"></div>
-            <div class="profile-section">
-                <div class="avatar-circle"></div>
-                <div class="profile-details">
-                    <h2>Feature Card Title</h2>
-                    <p>Feature details</p>
-                </div>
-            </div>
-        </a>
-        
     </main>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+            document.addEventListener("DOMContentLoaded", function() {
             const container = document.getElementById('contentContainer');
-            const featureCard = document.getElementById('featureCard');
             let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userMap = {};
+            users.forEach(u => { userMap[u.username.toLowerCase()] = u; });
 
             if (posts.length === 0) {
-                container.classList.add('empty-state');
+                container.innerHTML = `
+                    <div class="empty-message">
+                        <h2>No posts yet.</h2>
+                        <p>Be the first to start a campaign to fund your studies!</p>
+                    </div>
+                `;
             } else {
-                container.classList.remove('empty-state');
-                
                 let cardsHTML = '';
                 posts.forEach(post => {
+                    const imageStyle = post.image 
+                        ? `background-image: url('${post.image}');` 
+                        : '';
+
+                    const authorUser = userMap[(post.author || '').toLowerCase()];
+                    const authorName = post.author || 'Unknown';
+                    const authorOrg  = authorUser ? authorUser.org : '';
+                    const initial    = authorName.charAt(0).toUpperCase();
+
                     cardsHTML += `
-                        <a href="#" class="mini-card">
-                            <div class="picture-placeholder"></div>
+                        <a href="post-details.html?id=${post.id}" class="mini-card">
+                            <div class="picture-placeholder" style="${imageStyle}"></div>
                             <div class="profile-section">
-                                <div class="avatar-circle"></div>
+                                <div class="avatar-circle">${initial}</div>
                                 <div class="profile-details">
                                     <h2>${post.title}</h2>
+                                    <p class="author-name">${authorName}${authorOrg ? ` · <span class="author-org">${authorOrg}</span>` : ''}</p>
                                     <p>${post.details}</p>
                                 </div>
                             </div>
                         </a>
                     `;
                 });
-
-                featureCard.insertAdjacentHTML('afterend', cardsHTML);
+                container.innerHTML = cardsHTML;
             }
         });
     </script>

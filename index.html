@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>GoFundMyStudies</h1>
+        <h1><a href="index.html" style="color:inherit;text-decoration:none;">GoFundMyStudies</a></h1>
     </div>
 
     <div class="hero">
@@ -155,15 +155,13 @@
 
 <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Check if there is a logged-in user in localStorage
             const currentUser = localStorage.getItem('currentUser');
             const getStartedBtn = document.getElementById('getStartedBtn');
 
             if (currentUser) {
                 const userData = JSON.parse(currentUser);
                 
-                // Redirect them straight to browse campaigns if they are logged in
-                getStartedBtn.href = "browse.html";
+                getStartedBtn.href = "dashboard.html";
                 getStartedBtn.textContent = "Go to Dashboard";
                 
             }

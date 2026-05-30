@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Details - GoFundMyStudies</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: var(--color-light);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .details-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            background: var(--color-light);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-primary-dark);
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+
+        .campaign-title {
+            font-size: 2.2rem;
+            color: var(--color-dark);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .campaign-cover {
+            width: 100%;
+            height: 400px;
+            background-color: var(--color-muted);
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .author-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: 30px;
+        }
+
+        .author-avatar {
+            width: 55px;
+            height: 55px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .author-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 1.1rem;
+        }
+
+        .author-info .author-org-tag {
+            display: inline-block;
+            background: #eaf6f1;
+            color: var(--color-primary);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 4px;
+        }
+
+        .author-info p {
+            margin: 0;
+            color: var(--color-muted);
+            font-size: 0.9rem;
+        }
+
+        .funding-widget-card {
+            background-color: var(--color-light);
+            border-left: 5px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 2px 6px rgba(0, 90, 67, 0.05);
+        }
+
+        .funding-text h3 {
+            margin: 0 0 4px 0;
+            color: var(--color-primary);
+            font-size: 1.2rem;
+        }
+
+        .funding-text p {
+            margin: 0;
+            color: var(--color-muted);
+            font-size: 0.95rem;
+        }
+
+        .funding-action-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .funding-input {
+            width: 110px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            outline: none;
+            text-align: center;
+            color: var(--color-primary);
+        }
+
+        .funding-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 2px rgba(0, 90, 67, 0.1);
+        }
+
+        .btn-fund {
+            background-color: var(--color-primary);
+            color: var(--color-light);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-fund:hover {
+            background-color: var(--color-primary-dark);
+        }
+
+        .story-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--color-dark);
+        }
+        
+        .error-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1><a href="index.html" style="color:inherit;text-decoration:none;">GoFundMyStudies</a></h1>
+    </div>
+
+    <div class="details-container" id="detailsContainer">
+        <a href="browse.html" class="back-link">← Back to Browse</a>
+        
+        <h1 class="campaign-title" id="displayTitle">Campaign Title</h1>
+        
+        <div class="campaign-cover" id="displayCover"></div>
+        
+        <div class="author-box" id="authorBox">
+            <div class="author-avatar" id="authorAvatar">?</div>
+            <div class="author-info">
+                <h3 id="authorName">Loading...</h3>
+                <p id="authorMeta">Verified Student Fundraiser</p>
+            </div>
+        </div>
+
+        <div class="funding-widget-card" id="fundingModule">
+            <div class="funding-text">
+                <h3>Support this Campaign</h3>
+                <p id="totalRaisedText">Total Raised: ₱0.00</p>
+            </div>
+            <div class="funding-action-box">
+                <input type="number" id="donationAmount" class="funding-input" placeholder="₱ Value" min="1" step="any">
+                <button id="fundCampaignBtn" class="btn-fund">Fund Campaign</button>
+            </div>
+        </div>
+
+        <div class="story-content ql-editor" id="displayStory"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            const container = document.getElementById('detailsContainer');
+
+            let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const activePost = posts.find(p => p.id == postId);
+
+            if (activePost) {
+                document.getElementById('displayTitle').innerText = activePost.title;
+                
+                // Populate author box
+                const userMap = {};
+                users.forEach(u => { userMap[u.username.toLowerCase()] = u; });
+                const authorUser = userMap[(activePost.author || '').toLowerCase()];
+                const authorName = activePost.author || 'Unknown';
+                const authorOrg  = authorUser ? authorUser.org : null;
+                const initial    = authorName.charAt(0).toUpperCase();
+
+                document.getElementById('authorAvatar').textContent = initial;
+                document.getElementById('authorName').textContent = authorName;
+                if (authorOrg) {
+                    document.getElementById('authorMeta').innerHTML =
+                        `<span class="author-org-tag">${authorOrg}</span>`;
+                } else {
+                    document.getElementById('authorMeta').textContent = 'Verified Student Fundraiser';
+                }
+                
+                const currentRaised = Number(activePost.totalRaised || 0).toFixed(2);
+                document.getElementById('totalRaisedText').innerText = `Total Raised: ₱${currentRaised}`;
+
+                if (activePost.image) {
+                    const coverDiv = document.getElementById('displayCover');
+                    coverDiv.style.backgroundImage = `url('${activePost.image}')`;
+                    coverDiv.style.display = 'block';
+                }
+
+                document.getElementById('displayStory').innerHTML = activePost.fullDetails;
+
+                document.getElementById('fundCampaignBtn').addEventListener('click', function() {
+                    const amountInput = document.getElementById('donationAmount');
+                    const donationValue = parseFloat(amountInput.value);
+
+                    if (isNaN(donationValue) || donationValue <= 0) {
+                        alert("Please enter a valid contribution amount greater than ₱0.");
+                        return;
+                    }
+
+                    activePost.totalRaised = (parseFloat(activePost.totalRaised) || 0) + donationValue;
+                    
+                    localStorage.setItem('studyPosts', JSON.stringify(posts));
+
+                    let notifications = JSON.parse(localStorage.getItem('studyNotifications')) || [];
+                    notifications.unshift({
+                        text: `An anonymous user donated ₱${donationValue.toFixed(2)} to your campaign: "${activePost.title}"!`,
+                        time: "Just now"
+                    });
+                    localStorage.setItem('studyNotifications', JSON.stringify(notifications));
+
+                    alert(`Thank you for your generous gift of ₱${donationValue.toFixed(2)}!`);
+                    document.getElementById('totalRaisedText').innerText = `Total Raised: ₱${Number(activePost.totalRaised).toFixed(2)}`;
+                    amountInput.value = '';
+                });
+
+            } else {
+                container.innerHTML = `
+                    <div class="error-state">
+                        <h2>Campaign Not Found</h2>
+                        <p>The post you are trying to view doesn't exist.</p>
+                        <br>
+                        <a href="browse.html" style="text-decoration:none; color:#087E4C; font-weight:bold;">Return to Browse</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -18,7 +18,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Simple background without the moving circle */
             background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
             overflow: hidden;
             background-image: url(./assets/bg.jpg);
@@ -28,21 +27,19 @@
 
         .container {
             width: 100%;
-            max-width: 400px; /* Limits form width */
+            max-width: 400px;
             padding: 20px;
         }
 
-        /* Form Styling */
         .form-wrapper {
             background-color: var(--color-light);
             padding: 2rem;
             border-radius: 1.5rem;
             box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
             text-align: center;
-            display: none; /* Hidden by default */
+            display: none;
         }
 
-        /* Show the correct form based on parent class */
         .container.sign-in-mode .sign-in-form,
         .container.sign-up-mode .sign-up-form {
             display: block;
@@ -102,9 +99,25 @@
 </head>
 <body>
 
+    <a href="index.html" style="
+        position: fixed;
+        top: 20px;
+        left: 24px;
+        color: rgba(255,255,255,0.85);
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        z-index: 10;
+        transition: color 0.2s;
+    " onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.85)'">
+        ← Home
+    </a>
+
     <div id="container" class="container sign-in-mode">
         
-        <!-- SIGN IN FORM -->
         <div class="form-wrapper sign-in-form">
             <h2>Welcome</h2>
             <form id="loginForm" onsubmit="handleLogin(event)">
@@ -153,9 +166,7 @@
     <script>
             const container = document.getElementById('container');
 
-            // toggle function clears errors and switches view
             function toggle() {
-                // Hide errors when switching forms
                 document.getElementById('loginError').style.display = 'none';
                 document.getElementById('signupError').style.display = 'none';
 
@@ -168,7 +179,6 @@
                 }
             }
 
-            // Handle User Registration (Sign Up)
             function handleSignup(event) {
                 event.preventDefault(); 
 
@@ -178,9 +188,8 @@
                 const password = document.getElementById('signupPassword').value;
                 
                 const signupError = document.getElementById('signupError');
-                signupError.style.display = 'none'; // Reset error display
+                signupError.style.display = 'none';
 
-                // Password validation
                 if (password.length < 8) {
                     signupError.style.color = "red";
                     signupError.textContent = "Password must be at least 8 characters long.";
@@ -188,7 +197,6 @@
                     return;
                 }
 
-                // Check if user already exists
                 const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
                 const userExists = existingUsers.some(user => user.username.toLowerCase() === username.toLowerCase());
 
@@ -199,12 +207,10 @@
                     return;
                 }
 
-                // Save user object
                 const newUser = { username, org, email, password };
                 existingUsers.push(newUser);
                 localStorage.setItem('users', JSON.stringify(existingUsers));
 
-                // SUCCESS STATE (No popups): Show a green success message on the login screen instead!
                 document.getElementById('signupForm').reset();
                 toggle(); 
                 
@@ -214,7 +220,6 @@
                 loginError.style.display = 'block';
             }
 
-            // Handle User Authentication (Sign In)
             function handleLogin(event) {
                 event.preventDefault(); 
 
@@ -223,12 +228,10 @@
                 const passwordInput = document.getElementById('loginPassword').value;
                 
                 const loginError = document.getElementById('loginError');
-                loginError.style.display = 'none'; // Reset error display
+                loginError.style.display = 'none';
 
-                // Get users from localStorage
                 const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-                // Find matching user credentials
                 const foundUser = existingUsers.find(user => 
                     user.username.toLowerCase() === usernameInput.toLowerCase() && 
                     user.org.toLowerCase() === orgInput.toLowerCase() &&
@@ -236,13 +239,10 @@
                 );
 
                 if (foundUser) {
-                    // Store current session state
                     localStorage.setItem('currentUser', JSON.stringify(foundUser));
                     
-                    // Redirect directly to home page without pop-up blocking
                     window.location.href = "index.html";
                 } else {
-                    // Display error directly on the page
                     loginError.style.color = "red";
                     loginError.textContent = "Invalid username, organization, or password. Please try again.";
                     loginError.style.display = 'block';

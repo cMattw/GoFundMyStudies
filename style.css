@@ -37,11 +37,15 @@ body {
     width: 100%;
     top: 0;
     z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header h1 {
     font-size: 28px;
     margin-bottom: 0;
+    font: Verdana;
 }
 
 /* Hero Section */

@@ -3,545 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard - GoFundMyStudies</title>
+    <title>Dashboard - GoFundMyStudies</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --primary-green: #005A43; /* Deep emerald green */
-            --primary-light: #007D5E;
-            --accent-gold: #F3B137;  /* Gold/yellow button tone */
-            --accent-gold-hover: #E09E25;
-            --bg-light: #F4F7F5;     
-            --text-dark: #2C3E35;    
-            --text-muted: #6B7C74;
-            --border-color: #E2E8E5;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            display: flex;
-            min-height: 100vh;
+            background-color: var(--color-surface);
         }
 
-        /* --- SIDEBAR LAYOUT --- */
-        .sidebar {
-            width: 260px;
-            background-color: white;
-            border-right: 1px solid var(--border-color);
+        .welcome-banner {
+            background: radial-gradient(var(--color-primary), var(--color-primary-dark));
+            color: var(--color-light);
+            padding: 28px 40px;
+            margin-top: 58px;
             display: flex;
-            flex-direction: column;
-            padding: 20px 0;
-            position: fixed;
-            height: 100vh;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .logo-area {
-            padding: 10px 30px;
-            font-size: 1.3rem;
+        .welcome-text h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .welcome-text p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-action {
+            padding: 10px 22px;
+            background-color: var(--color-secondary);
+            color: var(--color-dark);
             font-weight: bold;
-            color: var(--primary-green);
-            margin-bottom: 30px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-block;
+            width: auto;
+            margin: 0;
+        }
+
+        .btn-action:hover {
+            background-color: var(--color-secondary-dark);
+            color: var(--color-light);
+        }
+
+        .btn-logout {
+            padding: 10px 22px;
+            background: transparent;
+            color: var(--color-light);
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: auto;
+            margin: 0;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .tab-nav {
+            background-color: var(--color-light);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            padding: 0 40px;
+            gap: 0;
+        }
+
+        .tab-btn {
+            padding: 16px 22px;
+            font-size: 0.93rem;
+            font-weight: 600;
+            color: var(--color-muted);
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            width: auto;
+            margin: 0;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             white-space: nowrap;
         }
 
-        .nav-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+        .tab-btn:hover {
+            color: var(--color-primary);
+            background: transparent;
         }
 
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 30px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 4px solid transparent;
+        .tab-btn.active {
+            color: var(--color-primary-dark);
+            border-bottom-color: var(--color-primary);
+            background: transparent;
         }
 
-        /* Main Nav items now fully hoverable */
-        .nav-item:hover {
-            background-color: #E6F0EC;
-            color: var(--primary-green);
-        }
-
-        .nav-item.active {
-            background-color: #D1E5DE;
-            color: var(--primary-green);
-            border-left-color: var(--primary-green);
-            font-weight: bold;
-        }
-
-        /* --- DROPDOWN SLIDE ANIMATION STYLES --- */
-        .sub-nav-wrapper {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out; /* Smooth slide expand speed */
-            margin-left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        /* When the parent wrapper or view triggers expansion */
-        .sub-nav-wrapper.open {
-            max-height: 120px; /* Expands to show contents */
-        }
-
-        .sub-item {
-            padding: 10px 30px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-right: 15px;
-            transition: all 0.2s;
-        }
-
-        .sub-item:hover {
-            background-color: #E6F0EC;
-            color: var(--primary-green);
-        }
-
-        .sub-item.active {
-            background-color: var(--primary-green);
-            color: white;
-            font-weight: bold;
-        }
-
-        .logout-btn {
-            margin-top: auto;
-            border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-        }
-
-        /* --- CONTAINER WRAPPERS --- */
-        .main-wrapper {
-            margin-left: 260px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- TOP NAVBAR --- */
-        .top-navbar {
-            height: 70px;
-            background-color: white;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 0 40px;
-            gap: 20px;
-        }
-
-        .header-title {
-            margin-right: auto;
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .notification-bell {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background-color: var(--accent-gold);
+        .notif-dot {
             width: 8px;
             height: 8px;
+            background-color: var(--color-secondary);
             border-radius: 50%;
+            display: none;
+            flex-shrink: 0;
         }
 
-        .avatar-top-box {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #EAF0EE;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        .avatar-top-box svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-muted);
-        }
-
-        /* --- CONTENT CONTAINERS --- */
-        .content-body {
+        .page-content {
+            max-width: 1050px;
+            margin: 0 auto;
             padding: 40px;
-            max-width: 1100px;
-            width: 100%;
         }
 
-        .tab-content {
+        .tab-panel {
             display: none;
         }
 
-        .tab-content.active-view {
+        .tab-panel.active-panel {
             display: block;
         }
 
-        /* --- EDIT PROFILE FORM --- */
+        .dash-card {
+            background-color: var(--color-light);
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin-bottom: 28px;
+        }
+
+        .dash-card h3 {
+            font-size: 1.2rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .card-sub {
+            color: var(--color-muted);
+            font-size: 0.9rem;
+            margin-bottom: 22px;
+        }
+
+        .posts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .posts-table th,
+        .posts-table td {
+            padding: 13px 16px;
+            border-bottom: 1px solid var(--color-border);
+            text-align: left;
+            font-size: 0.93rem;
+        }
+
+        .posts-table th {
+            color: var(--color-muted);
+            font-weight: 700;
+            font-size: 0.84rem;
+            background-color: var(--color-surface);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .posts-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .posts-table td a {
+            color: var(--color-primary-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .posts-table td a:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .status-live   { background-color: #e6f4ea; color: #137333; }
+        .status-draft  { background-color: #fef7e0; color: #b06000; }
+
+        .table-empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: var(--color-muted);
+        }
+
+        .table-empty a {
+            color: var(--color-primary);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .notif-item {
+            background: var(--color-light);
+            border: 1px solid var(--color-border);
+            border-left: 5px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+        }
+
+        .notif-item p {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--color-dark);
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .notif-item span {
+            font-size: 0.82rem;
+            color: var(--color-muted);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--color-muted);
+            font-size: 0.95rem;
+        }
+
         .profile-layout {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 40px;
+            grid-template-columns: 1fr 250px;
+            gap: 28px;
             align-items: start;
         }
 
-        @media (max-width: 900px) {
-            .profile-layout { grid-template-columns: 1fr; }
-            .main-wrapper { margin-left: 0; }
-            .sidebar { display: none; }
-        }
-
-        .profile-picture-section {
+        .avatar-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            gap: 14px;
+            padding: 30px 20px;
+            text-align: center;
         }
 
-        .avatar-container {
+        .avatar-wrap {
             position: relative;
-            width: 140px;
-            height: 140px;
-            margin-bottom: 15px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            cursor: pointer;
             overflow: hidden;
-            background: #EAF0EE;
-            border: 3px solid white;
-            box-shadow: 0 4px 12px rgba(0,58,43,0.08);
+            cursor: pointer;
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            flex-shrink: 0;
         }
 
-        .avatar-big {
+        .avatar-wrap .avatar-svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--color-muted);
+            padding: 22px;
+            box-sizing: border-box;
+        }
+
+        .avatar-wrap img.avatar-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .avatar-default-svg {
-            width: 100%;
-            height: 100%;
-            fill: var(--text-muted);
-            padding: 10px;
-            box-sizing: border-box;
+            display: none;
         }
 
         .avatar-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 90, 67, 0.7); 
-            color: white;
+            inset: 0;
+            background: rgba(1, 88, 67, 0.85);
+            color: var(--color-light);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.2s;
         }
 
-        .avatar-container:hover .avatar-overlay { opacity: 1; }
-        .avatar-overlay svg { width: 24px; height: 24px; fill: white; margin-bottom: 4px; }
-
-        .form-card {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,58,43,0.04);
+        .avatar-overlay svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--color-light);
+            margin-bottom: 5px;
         }
 
-        .form-card h3 { color: var(--primary-green); margin-bottom: 10px; }
-        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { margin-bottom: 22px; display: flex; flex-direction: column; }
+        .avatar-wrap:hover .avatar-overlay { opacity: 1; }
+
+        .avatar-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--color-dark);
+        }
+
+        .avatar-hint {
+            font-size: 0.82rem;
+            color: var(--color-muted);
+            line-height: 1.4;
+            max-width: 180px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
 
         .form-group label {
-            font-size: 0.85rem;
-            font-weight: bold;
+            font-size: 0.87rem;
+            font-weight: 700;
             margin-bottom: 8px;
-            color: var(--text-dark);
+            color: var(--color-dark);
         }
 
         .form-group input {
             padding: 12px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--color-border);
             border-radius: 6px;
             font-size: 0.95rem;
-            background-color: #FAFAFA;
-            color: var(--text-dark);
+            background-color: var(--color-light);
+            color: var(--color-dark);
             outline: none;
-            transition: border-color 0.2s, background-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
         }
 
-        .form-group input:focus { border-color: var(--primary-green); background-color: #fff; }
-        .btn-row { display: flex; justify-content: flex-end; gap: 15px; margin-top: 10px; }
-        
+        .form-group input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(8, 126, 76, 0.1);
+        }
+
+        .form-group input:disabled {
+            background-color: var(--color-surface);
+            color: var(--color-muted);
+            cursor: not-allowed;
+        }
+
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
         .btn {
             padding: 12px 24px;
-            font-size: 0.95rem;
+            font-size: 0.93rem;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
             border: none;
-            transition: background-color 0.2s, opacity 0.2s;
+            transition: background-color 0.2s, color 0.2s;
+            width: auto;
+            margin: 0;
         }
 
-        .btn:hover { opacity: 0.95; }
-        .btn-secondary { background-color: #EAEAEA; color: #444; }
-        .btn-primary { background-color: var(--accent-gold); color: #1A1A1A; }
-        .btn-primary:hover { background-color: var(--accent-gold-hover); }
-
-        /* --- DASHBOARD TABLES --- */
-        .posts-table-card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 2px 8px rgba(0,58,43,0.04); }
-        .posts-table-card h3 { color: var(--primary-green); }
-        .posts-table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
-        .posts-table th, .posts-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); }
-        .posts-table th { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
-        .post-status { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-        .status-live { background-color: #E6F4EA; color: #137333; }
-        .status-draft { background-color: #FEF7E0; color: #B06000; }
-
-        /* --- NOTIFICATIONS --- */
-        .notification-list { display: flex; flex-direction: column; gap: 15px; }
-        .notification-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-green);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .btn-ghost {
+            background-color: var(--color-input);
+            color: var(--color-dark);
         }
-        .notification-text p { font-weight: 500; margin-bottom: 4px; }
-        .notification-text span { font-size: 0.8rem; color: var(--text-muted); }
+
+        .btn-ghost:hover {
+            background-color: #c8c7c7;
+        }
+
+        .btn-primary {
+            background-color: var(--color-secondary);
+            color: var(--color-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-secondary-dark);
+            color: var(--color-light);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-banner { padding: 22px 20px; }
+            .tab-nav { padding: 0 15px; overflow-x: auto; }
+            .page-content { padding: 25px 18px; }
+            .profile-layout { grid-template-columns: 1fr; }
+            .form-row-2 { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-actions { width: 100%; }
+            .btn-action, .btn-logout { width: 100%; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="logo-area">🎓 GoFundMyStudies</div>
-        
-        <div class="nav-group">
-            <div class="nav-item" id="nav-dashboard" onclick="switchView('dashboard-view', this)">
-                <span style="margin-right: 12px;">📊</span> Dashboard
-            </div>
-            
-            <div class="nav-item" id="nav-notifications" onclick="switchView('notifications-view', this)">
-                <span style="margin-right: 12px;">🔔</span> Notifications
-            </div>
-            
-            <div class="nav-item active" id="nav-profile" onclick="switchView('profile-info-view', this)">
-                <span style="margin-right: 12px;">👤</span> Profile
-            </div>
-            
-            <div class="sub-nav-wrapper open" id="profileDropdown">
-                <div class="sub-item active" id="sub-info" onclick="switchView('profile-info-view', document.getElementById('nav-profile'), true)">Info</div>
-                <div class="sub-item" id="sub-security" onclick="switchView('profile-security-view', document.getElementById('nav-profile'), true)">Security</div>
-            </div>
+    <div class="header">
+        <h1><a href="index.html" style="color:inherit;text-decoration:none;">GoFundMyStudies</a></h1>
+    </div>
 
-            <div class="nav-item logout-btn">
-                <span style="margin-right: 12px;">🚪</span> Log Out
-            </div>
+    <div class="welcome-banner">
+        <div class="welcome-text">
+            <h2 id="welcomeHeading">Welcome back!</h2>
+            <p id="welcomeOrg">Loading...</p>
+        </div>
+        <div class="welcome-actions">
+            <a href="browse.html" class="btn-action">Browse Campaigns</a>
+            <a href="create-post.html" class="btn-action">+ Create Post</a>
+            <button class="btn-logout" id="logoutBtn">Log Out</button>
         </div>
     </div>
 
-    <div class="main-wrapper">
-        <div class="top-navbar">
-            <div class="header-title" id="page-header-title">Edit Profile</div>
-            
-            <div class="notification-bell" onclick="switchView('notifications-view', document.getElementById('nav-notifications'))">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-dark)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                <div class="notification-badge"></div>
-            </div>
-            
-            <div class="avatar-top-box">
-                <svg viewBox="0 0 24 24" id="topAvatarSvg">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-                <img src="" alt="Top Avatar" id="topAvatarImg" style="display:none; width:100%; height:100%; object-fit:cover;">
+    <div class="tab-nav">
+        <button class="tab-btn active" data-target="panel-dashboard">
+            Dashboard
+        </button>
+        <button class="tab-btn" data-target="panel-notifications">
+            Notifications
+            <span class="notif-dot" id="notifDot"></span>
+        </button>
+        <button class="tab-btn" data-target="panel-profile">
+            Profile
+        </button>
+        <button class="tab-btn" data-target="panel-security">
+            Security
+        </button>
+    </div>
+
+    <div class="page-content">
+
+        <div id="panel-dashboard" class="tab-panel active-panel">
+            <div class="dash-card">
+                <h3>Your Fundraiser Campaigns</h3>
+                <p class="card-sub">Track campaigns you have published on GoFundMyStudies.</p>
+                <table class="posts-table">
+                    <thead>
+                        <tr>
+                            <th>Campaign Title</th>
+                            <th>Total Raised</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postsTableBody"></tbody>
+                </table>
             </div>
         </div>
 
-        <div class="content-body">
-            <div id="dashboard-view" class="tab-content">
-                <div class="posts-table-card">
-                    <h3>Your Created Fundraiser Posts</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Track, check, and manage campaigns you have published.</p>
-                    <table class="posts-table">
-                        <thead>
-                            <tr><th>Campaign Title</th><th>Total Raised</th><th>Status</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Need funds for organic chemistry books</strong></td>
-                                
-                                <td>$420.00</td>
-                                <td><span class="post-status status-live">Live</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tuition Assistance for Fall Semester</strong></td>
-                            
-                                <td>$1,850.00</td>
-                                <td><span class="post-status status-draft">Draft</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div id="panel-notifications" class="tab-panel">
+            <div id="notifContainer"></div>
+        </div>
 
-            <div id="notifications-view" class="tab-content">
-                <div class="notification-list">
-                    <div class="notification-item">
-                        <div class="notification-text">
-                            <p>Anonymous user donated $50.00 to your Chemistry Book Campaign!</p>
-                            <span>2 hours ago</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="profile-info-view" class="tab-content active-view">
-                <div class="profile-layout">
-                    <div class="form-card">
-                        <form id="infoForm">
-                            <div class="form-group"><label>Full Name</label><input type="text" value="Zhenya Rynzhuk"></div>
-                            <div class="form-group"><label>Email Address</label><input type="email" value="zhenyarynzhuk@gmail.com"></div>
-                            <div class="form-group"><label>Phone Number</label><input type="text" value="587-556-998-02"></div>
-                            <div class="form-grid-2">
-                                <div class="form-group"><label>City</label><input type="text" value="Shanghai"></div>
-                                <div class="form-group"><label>Zip Code</label><input type="text" value="7789"></div>
+        <div id="panel-profile" class="tab-panel">
+            <div class="profile-layout">
+                <div class="dash-card">
+                    <h3>Personal Information</h3>
+                    <p class="card-sub">Update your account details below.</p>
+                    <form id="infoForm">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" id="profileUsername" disabled>
                             </div>
-                            <div class="form-group"><label>Country</label><input type="text" value="China"></div>
-                            <div class="btn-row">
-                                <button type="button" class="btn btn-secondary">Back To Home</button>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="profile-picture-section">
-                        <div class="avatar-container" onclick="document.getElementById('profileImageInput').click();">
-                            <svg viewBox="0 0 24 24" class="avatar-default-svg" id="avatarPlaceholderSvg">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            <img src="" alt="Profile Image" class="avatar-big" id="avatarImageDisplay" style="display: none;">
-                            <div class="avatar-overlay">
-                                <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
-                                <span>UPLOAD</span>
+                            <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" id="profileOrg" placeholder="Your organization name">
                             </div>
                         </div>
-                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
-                        <p style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Profile Image</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="profile-security-view" class="tab-content">
-                <div class="form-card" style="max-width: 600px;">
-                    <h3>Security & Account Access</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem;">Update your account password settings down below.</p>
-                    <form id="securityForm">
-                        <div class="form-group"><label>Current Password</label><input type="password" placeholder="••••••••"></div>
-                        <div class="form-group"><label>New Password</label><input type="password" placeholder="Minimum 8 characters"></div>
-                        <div class="form-group"><label>Confirm New Password</label><input type="password" placeholder="Repeat new password"></div>
-                        <div class="btn-row"><button type="submit" class="btn btn-primary">Update Password</button></div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="profileEmail" placeholder="you@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profileFullName" placeholder="Your display name (optional)">
+                        </div>
+                        <div class="btn-row">
+                            <button type="button" class="btn btn-ghost" onclick="window.location.href='browse.html'">Browse Campaigns</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
                     </form>
                 </div>
+
+                <div class="dash-card avatar-card">
+                    <div class="avatar-wrap" id="avatarWrap">
+                        <svg viewBox="0 0 24 24" class="avatar-svg" id="avatarSvg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <img src="" alt="Avatar" class="avatar-img" id="avatarImg">
+                        <div class="avatar-overlay">
+                            <svg viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/></svg>
+                            <span>UPLOAD</span>
+                        </div>
+                    </div>
+                    <input type="file" id="profileImageInput" accept="image/*" style="display:none;">
+                    <p class="avatar-name" id="avatarDisplayName">—</p>
+                    <p class="avatar-hint">Click your avatar to upload a new profile photo.</p>
+                </div>
             </div>
         </div>
+
+        <div id="panel-security" class="tab-panel">
+            <div class="dash-card" style="max-width: 600px;">
+                <h3>Security &amp; Password</h3>
+                <p class="card-sub">Change your account login password.</p>
+                <form id="securityForm">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="currentPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="newPassword" placeholder="Minimum 8 characters" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Repeat new password" required>
+                    </div>
+                    <div class="btn-row">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function switchView(viewId, element, clickSourcedFromSub = false) {
-            // 1. Swap visibility blocks on core containers
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active-view'));
-            document.getElementById(viewId).classList.add('active-view');
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active-panel'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.target).classList.add('active-panel');
+            });
+        });
 
-            // 2. Clean up active highlighting frames
-            const mainNavItems = document.querySelectorAll('.nav-item');
-            const subNavItems = document.querySelectorAll('.sub-item');
-            mainNavItems.forEach(item => item.classList.remove('active'));
-            subNavItems.forEach(item => item.classList.remove('active'));
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                alert("Access denied. Please sign in first.");
+                window.location.href = "signup.html";
+                return;
+            }
 
-            const dropdown = document.getElementById('profileDropdown');
-            const headerTitle = document.getElementById('page-header-title');
+            document.getElementById('welcomeHeading').textContent =
+                `Welcome back, ${currentUser.username}!`;
+            document.getElementById('welcomeOrg').textContent =
+                currentUser.org ? `${currentUser.org}` : "No organization set";
 
-            // 3. Evaluate dropdown logic state
-            if (viewId === 'profile-info-view' || viewId === 'profile-security-view') {
-                document.getElementById('nav-profile').classList.add('active');
-                dropdown.classList.add('open'); // Slides open smoothly
+            document.getElementById('profileUsername').value = currentUser.username || "";
+            document.getElementById('profileOrg').value      = currentUser.org      || "";
+            document.getElementById('profileEmail').value    = currentUser.email    || "";
+            document.getElementById('profileFullName').value = currentUser.fullName || "";
+            document.getElementById('avatarDisplayName').textContent =
+                currentUser.fullName || currentUser.username || "—";
 
-                if (viewId === 'profile-info-view') {
-                    document.getElementById('sub-info').classList.add('active');
-                    headerTitle.textContent = "Edit Profile";
+            if (currentUser.avatar) setAvatar(currentUser.avatar);
+
+            function renderCampaigns() {
+                const tbody  = document.getElementById('postsTableBody');
+                const posts  = JSON.parse(localStorage.getItem('studyPosts')) || [];
+                const mine   = posts.filter(p => p.author === currentUser.username);
+
+                if (mine.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" class="table-empty">
+                                You haven't published any campaigns yet.<br><br>
+                                <a href="create-post.html">Create your first campaign →</a>
+                            </td>
+                        </tr>`;
                 } else {
-                    document.getElementById('sub-security').classList.add('active');
-                    headerTitle.textContent = "Security Settings";
-                }
-            } else {
-                // If dashboard or notifications is selected, hide/slide up the dropdown menu
-                element.classList.add('active');
-                dropdown.classList.remove('open'); // Animation rolls it closed smoothly
-
-                if (viewId === 'dashboard-view') {
-                    headerTitle.textContent = "Dashboard";
-                } else if (viewId === 'notifications-view') {
-                    headerTitle.textContent = "Notifications Centre";
+                    tbody.innerHTML = mine.map(p => {
+                        const raised = Number(p.totalRaised || 0).toFixed(2);
+                        const status = p.status || "Live";
+                        const cls    = status.toLowerCase() === 'live' ? 'status-live' : 'status-draft';
+                        return `
+                            <tr>
+                                <td>
+                                    <a href="post-details.html?id=${p.id}">${p.title}</a>
+                                </td>
+                                <td>₱${raised}</td>
+                                <td><span class="status-pill ${cls}">${status}</span></td>
+                            </tr>`;
+                    }).join('');
                 }
             }
-        }
+            renderCampaigns();
 
-        // Image Selection Tracker System
-        const profileImageInput = document.getElementById('profileImageInput');
-        const avatarImageDisplay = document.getElementById('avatarImageDisplay');
-        const avatarPlaceholderSvg = document.getElementById('avatarPlaceholderSvg');
-        const topAvatarImg = document.getElementById('topAvatarImg');
-        const topAvatarSvg = document.getElementById('topAvatarSvg');
+            function renderNotifications() {
+                const container = document.getElementById('notifContainer');
+                const dot       = document.getElementById('notifDot');
+                const notifs    = JSON.parse(localStorage.getItem('studyNotifications')) || [];
 
-        profileImageInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
+                if (notifs.length === 0) {
+                    dot.style.display = 'none';
+                    container.innerHTML = `
+                        <div class="dash-card">
+                            <div class="empty-state">
+                                <p>No notifications yet.</p>
+                                <p style="margin-top:8px;">When someone donates to your campaign, it will appear here.</p>
+                            </div>
+                        </div>`;
+                } else {
+                    dot.style.display = 'inline-block';
+                    container.innerHTML = notifs.map(n => `
+                        <div class="notif-item">
+                            <p>${n.text}</p>
+                            <span>${n.time}</span>
+                        </div>`).join('');
+                }
+            }
+            renderNotifications();
+
+            document.getElementById('infoForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                currentUser.org      = document.getElementById('profileOrg').value.trim();
+                currentUser.email    = document.getElementById('profileEmail').value.trim();
+                currentUser.fullName = document.getElementById('profileFullName').value.trim();
+
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                syncUser(currentUser);
+
+                document.getElementById('welcomeOrg').textContent =
+                    currentUser.org || "No organization set";
+                document.getElementById('avatarDisplayName').textContent =
+                    currentUser.fullName || currentUser.username || "—";
+
+                alert("Profile saved successfully!");
+            });
+
+            document.getElementById('securityForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const curr = document.getElementById('currentPassword').value;
+                const next = document.getElementById('newPassword').value;
+                const conf = document.getElementById('confirmPassword').value;
+
+                if (curr !== currentUser.password) {
+                    alert("Current password is incorrect.");
+                    return;
+                }
+                if (next.length < 8) {
+                    alert("New password must be at least 8 characters.");
+                    return;
+                }
+                if (next !== conf) {
+                    alert("Passwords do not match.");
+                    return;
+                }
+
+                currentUser.password = next;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                syncUser(currentUser);
+                alert("Password updated successfully!");
+                this.reset();
+            });
+
+            document.getElementById('avatarWrap').addEventListener('click', function () {
+                document.getElementById('profileImageInput').click();
+            });
+
+            document.getElementById('profileImageInput').addEventListener('change', function () {
+                const file = this.files[0];
+                if (!file) return;
                 const reader = new FileReader();
-                reader.addEventListener('load', function() {
-                    avatarImageDisplay.setAttribute('src', this.result);
-                    avatarImageDisplay.style.display = 'block';
-                    avatarPlaceholderSvg.style.display = 'none';
-
-                    topAvatarImg.setAttribute('src', this.result);
-                    topAvatarImg.style.display = 'block';
-                    topAvatarSvg.style.display = 'none';
-                });
+                reader.onload = function (e) {
+                    setAvatar(e.target.result);
+                    currentUser.avatar = e.target.result;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    syncUser(currentUser);
+                };
                 reader.readAsDataURL(file);
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', function () {
+                localStorage.removeItem('currentUser');
+                window.location.href = "signup.html";
+            });
+
+            function setAvatar(src) {
+                const img = document.getElementById('avatarImg');
+                const svg = document.getElementById('avatarSvg');
+                img.src = src;
+                img.style.display = 'block';
+                svg.style.display = 'none';
+            }
+
+            function syncUser(user) {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const idx   = users.findIndex(u =>
+                    u.username.toLowerCase() === user.username.toLowerCase());
+                if (idx !== -1) {
+                    users[idx] = { ...users[idx], ...user };
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
             }
         });
     </script>
