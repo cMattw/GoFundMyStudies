@@ -64,8 +64,8 @@ This project is deployed using GitHub Pages. Visit the live site at: https://cma
 - John Matthew Agoncillo
 - Clark Eugene Dimarucut
 - Hale Styx Igmasin
-- John Paul Ceballos
 - Jasper Capili
+- John Paul Ceballos
 
 ## Course
 
