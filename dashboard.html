@@ -209,6 +209,238 @@
         }
 
         .status-live   { background-color: #e6f4ea; color: #137333; }
+
+        .btn-withdraw {
+            background: none;
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+            width: auto;
+            margin: 0;
+        }
+
+        .btn-withdraw:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        /* Summary card above the table */
+        .funds-summary-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            border-radius: 10px;
+            padding: 22px 28px;
+            margin-bottom: 24px;
+            color: #fff;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .funds-summary-card .fund-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .funds-summary-card .fund-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .btn-withdraw-main {
+            background: var(--color-secondary);
+            color: var(--color-dark);
+            border: none;
+            padding: 12px 26px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: auto;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .btn-withdraw-main:hover {
+            background: var(--color-secondary-dark);
+            color: #fff;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 14px;
+            padding: 36px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            position: relative;
+        }
+
+        .modal-box h3 {
+            font-size: 1.25rem;
+            color: var(--color-primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .modal-box .modal-sub {
+            font-size: 0.88rem;
+            color: var(--color-muted);
+            margin-bottom: 24px;
+        }
+
+        .modal-campaign-select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 7px;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            outline: none;
+            background: #fff;
+        }
+
+        .modal-campaign-select:focus {
+            border-color: var(--color-primary);
+        }
+
+        .modal-avail {
+            font-size: 0.85rem;
+            color: var(--color-muted);
+            margin-bottom: 16px;
+        }
+
+        .modal-avail strong {
+            color: var(--color-primary);
+        }
+
+        .modal-amount-wrap {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: 7px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .modal-currency {
+            padding: 12px 14px;
+            background: var(--color-surface);
+            font-weight: 700;
+            color: var(--color-muted);
+            font-size: 1rem;
+            border-right: 1px solid var(--color-border);
+        }
+
+        .modal-amount-input {
+            flex: 1;
+            padding: 12px 14px;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel {
+            flex: 1;
+            padding: 12px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 7px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--color-dark);
+            width: auto;
+            margin: 0;
+        }
+
+        .btn-modal-confirm {
+            flex: 1;
+            padding: 12px;
+            background: var(--color-primary);
+            border: none;
+            border-radius: 7px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #fff;
+            width: auto;
+            margin: 0;
+            transition: background 0.2s;
+        }
+
+        .btn-modal-confirm:hover {
+            background: var(--color-primary-dark);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--color-muted);
+            width: auto;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .withdraw-history {
+            margin-top: 20px;
+        }
+
+        .withdraw-history h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-muted);
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.88rem;
+        }
+
+        .history-item:last-child { border-bottom: none; }
+
+        .history-item .h-amount { font-weight: 700; color: var(--color-primary-dark); }
+        .history-item .h-meta { color: var(--color-muted); font-size: 0.8rem; }
         .status-draft  { background-color: #fef7e0; color: #b06000; }
 
         .table-empty {
@@ -462,7 +694,39 @@
 
     <div class="page-content">
 
+        <!-- Withdraw Funds Modal -->
+        <div class="modal-backdrop" id="withdrawModal">
+            <div class="modal-box">
+                <button class="modal-close" id="modalClose">×</button>
+                <h3>Withdraw Funds</h3>
+                <p class="modal-sub">Choose a campaign and enter how much you'd like to withdraw.</p>
+                <select class="modal-campaign-select" id="withdrawCampaignSelect"></select>
+                <p class="modal-avail" id="modalAvailText">Available: <strong>₱0.00</strong></p>
+                <div class="modal-amount-wrap">
+                    <span class="modal-currency">₱</span>
+                    <input type="number" class="modal-amount-input" id="withdrawAmountInput" placeholder="0.00" min="1" step="any">
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-modal-cancel" id="modalCancelBtn">Cancel</button>
+                    <button class="btn-modal-confirm" id="modalConfirmBtn">Confirm Withdrawal</button>
+                </div>
+                <div class="withdraw-history" id="withdrawHistory" style="display:none;">
+                    <h4>Recent Withdrawals</h4>
+                    <div id="withdrawHistoryList"></div>
+                </div>
+            </div>
+        </div>
+
         <div id="panel-dashboard" class="tab-panel active-panel">
+            <!-- Funds summary card — shown only when there are funds -->
+            <div class="funds-summary-card" id="fundsSummaryCard" style="display:none;">
+                <div>
+                    <p class="fund-label">Total Available Funds (All Campaigns)</p>
+                    <p class="fund-amount" id="totalFundsDisplay">₱0.00</p>
+                </div>
+                <button class="btn-withdraw-main" id="openWithdrawBtn">Withdraw Funds</button>
+            </div>
+
             <div class="dash-card">
                 <h3>Your Fundraiser Campaigns</h3>
                 <p class="card-sub">Track campaigns you have published on GoFundMyStudies.</p>
@@ -471,7 +735,10 @@
                         <tr>
                             <th>Campaign Title</th>
                             <th>Total Raised</th>
+                            <th>Goal</th>
+                            <th>Deadline</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="postsTableBody"></tbody>
@@ -618,16 +885,32 @@
                     tbody.innerHTML = mine.map(p => {
                         const raised = Number(p.totalRaised || 0).toFixed(2);
                         const status = p.status || "Live";
-
-                        // Apply the correct CSS class based on whether the campaign is live or a draft
                         const cls    = status.toLowerCase() === 'live' ? 'status-live' : 'status-draft';
+
+                        const goalDisplay = p.targetAmount
+                            ? `₱${Number(p.targetAmount).toLocaleString('en-PH', {minimumFractionDigits:2, maximumFractionDigits:2})}`
+                            : '—';
+
+                        let deadlineDisplay = '—';
+                        if (p.endDate) {
+                            const end = new Date(p.endDate + 'T00:00:00');
+                            const diffDays = Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24));
+                            const dateStr = end.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+                            deadlineDisplay = diffDays > 0 ? `${dateStr} <span style="color:var(--color-muted);font-size:0.8rem;">(${diffDays}d left)</span>` : `<span style="color:#b06000;">${dateStr} (Ended)</span>`;
+                        }
+
+                        const withdrawBtn = Number(p.totalRaised || 0) > 0
+                            ? `<button class="btn-withdraw" onclick="openWithdrawForCampaign('${p.id}')">Withdraw</button>`
+                            : `<span style="color:var(--color-muted);font-size:0.8rem;">No funds</span>`;
+
                         return `
                             <tr>
-                                <td>
-                                    <a href="post-details.html?id=${p.id}">${p.title}</a>
-                                </td>
+                                <td><a href="post-details.html?id=${p.id}">${p.title}</a></td>
                                 <td>₱${raised}</td>
+                                <td>${goalDisplay}</td>
+                                <td>${deadlineDisplay}</td>
                                 <td><span class="status-pill ${cls}">${status}</span></td>
+                                <td>${withdrawBtn}</td>
                             </tr>`;
                     }).join('');
                 }
@@ -768,6 +1051,175 @@
                     localStorage.setItem('users', JSON.stringify(users));
                 }
             }
+        });
+
+        // ── Withdraw Funds Logic ───────────────────────────────────────────
+        function getMyPosts() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
+            return { posts, mine: posts.filter(p => p.author === currentUser.username) };
+        }
+
+        function refreshFundsSummary() {
+            const { mine } = getMyPosts();
+            const total = mine.reduce((sum, p) => sum + Number(p.totalRaised || 0), 0);
+            const card = document.getElementById('fundsSummaryCard');
+            const display = document.getElementById('totalFundsDisplay');
+            if (total > 0) {
+                card.style.display = 'flex';
+                display.textContent = '₱' + total.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                card.style.display = 'none';
+            }
+        }
+
+        function populateWithdrawSelect(preselectedId) {
+            const { mine } = getMyPosts();
+            const select = document.getElementById('withdrawCampaignSelect');
+            select.innerHTML = mine
+                .filter(p => Number(p.totalRaised || 0) > 0)
+                .map(p => `<option value="${p.id}" ${String(p.id) === String(preselectedId) ? 'selected' : ''}>${p.title}</option>`)
+                .join('');
+            updateModalAvail();
+        }
+
+        function updateModalAvail() {
+            const { mine } = getMyPosts();
+            const select = document.getElementById('withdrawCampaignSelect');
+            const id = select.value;
+            const campaign = mine.find(p => String(p.id) === String(id));
+            const avail = campaign ? Number(campaign.totalRaised || 0) : 0;
+            document.getElementById('modalAvailText').innerHTML =
+                `Available to withdraw: <strong>₱${avail.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>`;
+            document.getElementById('withdrawAmountInput').max = avail;
+        }
+
+        function renderWithdrawHistory() {
+            const history = JSON.parse(localStorage.getItem('withdrawHistory')) || [];
+            const wrap = document.getElementById('withdrawHistory');
+            const list = document.getElementById('withdrawHistoryList');
+            if (history.length === 0) { wrap.style.display = 'none'; return; }
+            wrap.style.display = 'block';
+            list.innerHTML = history.slice(0, 5).map(h => `
+                <div class="history-item">
+                    <div>
+                        <div class="h-amount">−₱${Number(h.amount).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</div>
+                        <div class="h-meta">${h.campaign}</div>
+                    </div>
+                    <div><div class="h-meta">${h.date}</div></div>
+                </div>`).join('');
+        }
+
+        function openWithdrawModal() {
+            populateWithdrawSelect(null);
+            renderWithdrawHistory();
+            document.getElementById('withdrawAmountInput').value = '';
+            document.getElementById('withdrawModal').classList.add('open');
+        }
+
+        function openWithdrawForCampaign(id) {
+            populateWithdrawSelect(id);
+            renderWithdrawHistory();
+            document.getElementById('withdrawAmountInput').value = '';
+            document.getElementById('withdrawModal').classList.add('open');
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').classList.remove('open');
+        }
+
+        function rebuildTableRow(p) {
+            const raised = Number(p.totalRaised || 0).toFixed(2);
+            const status = p.status || 'Live';
+            const cls = status.toLowerCase() === 'live' ? 'status-live' : 'status-draft';
+            const goalDisplay = p.targetAmount
+                ? '₱' + Number(p.targetAmount).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : '—';
+            let deadlineDisplay = '—';
+            if (p.endDate) {
+                const end = new Date(p.endDate + 'T00:00:00');
+                const diffDays = Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24));
+                const dateStr = end.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+                deadlineDisplay = diffDays > 0
+                    ? `${dateStr} <span style="color:var(--color-muted);font-size:0.8rem;">(${diffDays}d left)</span>`
+                    : `<span style="color:#b06000;">${dateStr} (Ended)</span>`;
+            }
+            const withdrawBtn = Number(p.totalRaised || 0) > 0
+                ? `<button class="btn-withdraw" onclick="openWithdrawForCampaign('${p.id}')">Withdraw</button>`
+                : `<span style="color:var(--color-muted);font-size:0.8rem;">No funds</span>`;
+            return `<tr>
+                <td><a href="post-details.html?id=${p.id}">${p.title}</a></td>
+                <td>₱${raised}</td>
+                <td>${goalDisplay}</td>
+                <td>${deadlineDisplay}</td>
+                <td><span class="status-pill ${cls}">${status}</span></td>
+                <td>${withdrawBtn}</td>
+            </tr>`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            refreshFundsSummary();
+
+            document.getElementById('openWithdrawBtn').addEventListener('click', openWithdrawModal);
+            document.getElementById('modalClose').addEventListener('click', closeWithdrawModal);
+            document.getElementById('modalCancelBtn').addEventListener('click', closeWithdrawModal);
+            document.getElementById('withdrawCampaignSelect').addEventListener('change', updateModalAvail);
+
+            document.getElementById('withdrawModal').addEventListener('click', function (e) {
+                if (e.target === this) closeWithdrawModal();
+            });
+
+            document.getElementById('modalConfirmBtn').addEventListener('click', function () {
+                const select = document.getElementById('withdrawCampaignSelect');
+                const id = select.value;
+                const amount = parseFloat(document.getElementById('withdrawAmountInput').value);
+
+                if (!id) { alert('Please select a campaign.'); return; }
+                if (isNaN(amount) || amount <= 0) { alert('Please enter a valid amount greater than ₱0.'); return; }
+
+                let posts = JSON.parse(localStorage.getItem('studyPosts')) || [];
+                const campaignIdx = posts.findIndex(p => String(p.id) === String(id));
+                if (campaignIdx === -1) { alert('Campaign not found.'); return; }
+
+                const avail = Number(posts[campaignIdx].totalRaised || 0);
+                if (amount > avail) {
+                    alert(`You can only withdraw up to ₱${avail.toLocaleString('en-PH', { minimumFractionDigits: 2 })}.`);
+                    return;
+                }
+
+                posts[campaignIdx].totalRaised = avail - amount;
+                localStorage.setItem('studyPosts', JSON.stringify(posts));
+
+                // Save to withdrawal history
+                const history = JSON.parse(localStorage.getItem('withdrawHistory')) || [];
+                history.unshift({
+                    amount: amount,
+                    campaign: posts[campaignIdx].title,
+                    date: new Date().toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                });
+                localStorage.setItem('withdrawHistory', JSON.stringify(history));
+
+                // Add notification
+                let notifications = JSON.parse(localStorage.getItem('studyNotifications')) || [];
+                notifications.unshift({
+                    text: `You withdrew ₱${amount.toFixed(2)} from your campaign: "${posts[campaignIdx].title}".`,
+                    time: 'Just now'
+                });
+                localStorage.setItem('studyNotifications', JSON.stringify(notifications));
+
+                alert(`Successfully withdrew ₱${amount.toLocaleString('en-PH', { minimumFractionDigits: 2 })} from "${posts[campaignIdx].title}".`);
+
+                closeWithdrawModal();
+                refreshFundsSummary();
+
+                // Re-render the table
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                const mine = posts.filter(p => p.author === currentUser.username);
+                const tbody = document.getElementById('postsTableBody');
+                tbody.innerHTML = mine.length > 0
+                    ? mine.map(rebuildTableRow).join('')
+                    : `<tr><td colspan="6" class="table-empty">You haven't published any campaigns yet.<br><br><a href="create-post.html">Create your first campaign →</a></td></tr>`;
+            });
         });
     </script>
 </body>

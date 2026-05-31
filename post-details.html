@@ -166,6 +166,85 @@
             background-color: var(--color-primary-dark);
         }
 
+        .goal-progress-section {
+            margin-bottom: 35px;
+        }
+
+        .goal-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .goal-raised {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            line-height: 1;
+        }
+
+        .goal-raised small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-muted);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .goal-target {
+            text-align: right;
+            font-size: 0.95rem;
+            color: var(--color-muted);
+        }
+
+        .goal-target strong {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--color-dark);
+        }
+
+        .progress-bar-wrap {
+            background-color: var(--color-border);
+            border-radius: 999px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--color-primary);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .goal-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--color-muted);
+        }
+
+        .goal-footer .pct {
+            font-weight: 700;
+            color: var(--color-primary-dark);
+        }
+
+        .deadline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eaf6f1;
+            color: var(--color-primary-dark);
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
         .story-content {
             font-size: 1.1rem;
             line-height: 1.7;
@@ -199,10 +278,23 @@
             </div>
         </div>
 
+        <div class="goal-progress-section" id="goalProgressSection" style="display:none;">
+            <div class="goal-stats">
+                <div class="goal-raised" id="raisedDisplay">₱0.00 <small>raised</small></div>
+                <div class="goal-target">Goal <strong id="goalDisplay">₱0.00</strong></div>
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="goal-footer">
+                <span class="pct" id="progressPct">0%</span>
+                <span id="deadlineBadge"></span>
+            </div>
+        </div>
+
         <div class="funding-widget-card" id="fundingModule">
             <div class="funding-text">
                 <h3>Support this Campaign</h3>
-                <p id="totalRaisedText">Total Raised: ₱0.00</p>
             </div>
             <div class="funding-action-box">
                 <input type="number" id="donationAmount" class="funding-input" placeholder="₱ Value" min="1" step="any">
@@ -249,9 +341,33 @@
                     document.getElementById('authorMeta').textContent = 'Verified Student Fundraiser';
                 }
                 
-                // Show the current total amount raised for this campaign
-                const currentRaised = Number(activePost.totalRaised || 0).toFixed(2);
-                document.getElementById('totalRaisedText').innerText = `Total Raised: ₱${currentRaised}`;
+                // Render goal/progress section
+                function renderProgress() {
+                    const raised = Number(activePost.totalRaised || 0);
+                    const target = Number(activePost.targetAmount || 0);
+                    const section = document.getElementById('goalProgressSection');
+                    if (target > 0) {
+                        section.style.display = 'block';
+                        const pct = Math.min(100, (raised / target) * 100);
+                        document.getElementById('raisedDisplay').innerHTML =
+                            `₱${raised.toLocaleString('en-PH', {minimumFractionDigits:2, maximumFractionDigits:2})} <small>raised</small>`;
+                        document.getElementById('goalDisplay').textContent =
+                            `₱${target.toLocaleString('en-PH', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+                        document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
+                        document.getElementById('progressPct').textContent = pct.toFixed(1) + '% funded';
+                    }
+                    if (activePost.endDate) {
+                        const end = new Date(activePost.endDate + 'T00:00:00');
+                        const diffDays = Math.ceil((end - new Date()) / (1000 * 60 * 60 * 24));
+                        const dateStr = end.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
+                        const label = diffDays > 0 ? `${diffDays} day${diffDays !== 1 ? 's' : ''} left · Ends ${dateStr}` : `Campaign ended ${dateStr}`;
+                        document.getElementById('deadlineBadge').innerHTML =
+                            `<span class="deadline-badge">📅 ${label}</span>`;
+                        if (target > 0) section.style.display = 'block';
+                        else { section.style.display = 'block'; }
+                    }
+                }
+                renderProgress();
 
                 // If the post has a cover image, show it
                 if (activePost.image) {
@@ -290,7 +406,7 @@
 
                     // Confirm the donation to the user and update the displayed total
                     alert(`Thank you for your generous gift of ₱${donationValue.toFixed(2)}!`);
-                    document.getElementById('totalRaisedText').innerText = `Total Raised: ₱${Number(activePost.totalRaised).toFixed(2)}`;
+                    renderProgress(); // Update progress bar
                     amountInput.value = ''; // Clear the input field
                 });
 

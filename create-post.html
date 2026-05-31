@@ -178,6 +178,14 @@
                         <label for="postTitle">Campaign Title</label>
                         <input type="text" id="postTitle" required placeholder="e.g., Need funds for chemistry books">
                     </div>
+                    <div class="form-group">
+                        <label for="targetAmount">Funding Goal (₱)</label>
+                        <input type="number" id="targetAmount" required placeholder="e.g., 50000" min="1" step="any">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Campaign End Date</label>
+                        <input type="date" id="endDate" required>
+                    </div>
                 </div>
 
                 <div class="form-right">
@@ -231,6 +239,10 @@
             }
         });
 
+        // Set minimum date for end date picker to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('endDate').setAttribute('min', today);
+
         const imageInput = document.getElementById('imageInput');
         const imagePreview = document.getElementById('imagePreview');
         const uploaderPlaceholder = document.getElementById('uploaderPlaceholder');
@@ -268,6 +280,8 @@
             const textPreview = quill.getText().trim();
             const richTextDetails = quill.root.innerHTML;
             const imageFile = imageInput.files[0];
+            const targetAmount = parseFloat(document.getElementById('targetAmount').value) || 0;
+            const endDate = document.getElementById('endDate').value;
 
             // Build the new campaign object with all relevant data
             const newCampaign = {
@@ -277,7 +291,9 @@
                 fullDetails: richTextDetails, 
                 author: currentUser.username,
                 raised: "₱0.00",
-                status: "Live"
+                status: "Live",
+                targetAmount: targetAmount,
+                endDate: endDate
             };
 
             // Save the campaign to localStorage, then redirect to the browse page
