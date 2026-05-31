@@ -148,7 +148,7 @@
                     <input type="text" id="signupOrg" placeholder="Organization" required>
                 </div>
                 <div class="input-group">
-                    <input type="email" id="signupEmail" placeholder="Email" required>
+                    <input type="email" id="signupEmail" placeholder="Your @cvsu.edu.ph email" pattern="[a-zA-Z0-9._%+-]+@cvsu\.edu\.ph$" title="Please use your official @cvsu.edu.ph email address." required>
                 </div>
                 <div class="input-group">
                     <input type="password" id="signupPassword" placeholder="Password" required>
@@ -196,6 +196,14 @@
             if (password.length < 8) {
                 signupError.style.color = "red";
                 signupError.textContent = "Password must be at least 8 characters long.";
+                signupError.style.display = 'block';
+                return;
+            }
+
+            // CvSU Email Domain Verification Validation
+            if (!email.toLowerCase().endsWith('@cvsu.edu.ph')) {
+                signupError.style.color = "red";
+                signupError.textContent = "Access restricted. You must register with a @cvsu.edu.ph email address.";
                 signupError.style.display = 'block';
                 return;
             }
