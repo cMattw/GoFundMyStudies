@@ -8,18 +8,21 @@
     <style>
         body {
             background-color: var(--color-surface);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .welcome-banner {
             background: radial-gradient(var(--color-primary), var(--color-primary-dark));
             color: var(--color-light);
             padding: 28px 40px;
-            margin-top: 58px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
             flex-wrap: wrap;
+            margin-top: 70px;
         }
 
         .welcome-text h2 {
@@ -87,6 +90,12 @@
             display: flex;
             padding: 0 40px;
             gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .tab-nav::-webkit-scrollbar {
+            display: none; 
         }
 
         .tab-btn {
@@ -132,6 +141,7 @@
             max-width: 1050px;
             margin: 0 auto;
             padding: 40px;
+            box-sizing: border-box;
         }
 
         .tab-panel {
@@ -155,6 +165,7 @@
             font-size: 1.2rem;
             color: var(--color-primary-dark);
             margin-bottom: 5px;
+            margin-top: 0;
         }
 
         .card-sub {
@@ -209,14 +220,15 @@
         }
 
         .status-live   { background-color: #e6f4ea; color: #137333; }
+        .status-draft  { background-color: #fef7e0; color: #b06000; }
 
         .btn-withdraw {
             background: none;
             border: 1px solid var(--color-primary);
             color: var(--color-primary);
-            padding: 4px 10px;
+            padding: 6px 14px;
             border-radius: 4px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.15s, color 0.15s;
@@ -230,7 +242,6 @@
             color: #fff;
         }
 
-        /* Summary card above the table */
         .funds-summary-card {
             display: flex;
             align-items: center;
@@ -248,12 +259,14 @@
             font-size: 0.85rem;
             opacity: 0.8;
             margin-bottom: 4px;
+            margin-top: 0;
         }
 
         .funds-summary-card .fund-amount {
             font-size: 2rem;
             font-weight: 800;
             line-height: 1;
+            margin: 0;
         }
 
         .btn-withdraw-main {
@@ -276,7 +289,6 @@
             color: #fff;
         }
 
-        /* Modal */
         .modal-backdrop {
             display: none;
             position: fixed;
@@ -285,6 +297,8 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         .modal-backdrop.open {
@@ -294,23 +308,28 @@
         .modal-box {
             background: #fff;
             border-radius: 14px;
-            padding: 36px;
+            padding: 30px;
             width: 100%;
             max-width: 460px;
             box-shadow: 0 8px 40px rgba(0,0,0,0.18);
             position: relative;
+            box-sizing: border-box;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-box h3 {
             font-size: 1.25rem;
             color: var(--color-primary-dark);
             margin-bottom: 6px;
+            margin-top: 0;
         }
 
         .modal-box .modal-sub {
             font-size: 0.88rem;
             color: var(--color-muted);
             margin-bottom: 24px;
+            margin-top: 0;
         }
 
         .modal-campaign-select {
@@ -322,6 +341,7 @@
             margin-bottom: 16px;
             outline: none;
             background: #fff;
+            box-sizing: border-box;
         }
 
         .modal-campaign-select:focus {
@@ -332,6 +352,7 @@
             font-size: 0.85rem;
             color: var(--color-muted);
             margin-bottom: 16px;
+            margin-top: 0;
         }
 
         .modal-avail strong {
@@ -362,6 +383,7 @@
             border: none;
             font-size: 1rem;
             outline: none;
+            width: 100%;
         }
 
         .modal-actions {
@@ -417,7 +439,7 @@
         }
 
         .withdraw-history {
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .withdraw-history h4 {
@@ -426,6 +448,7 @@
             letter-spacing: 0.05em;
             color: var(--color-muted);
             margin-bottom: 10px;
+            margin-top: 0;
         }
 
         .history-item {
@@ -435,13 +458,13 @@
             padding: 10px 0;
             border-bottom: 1px solid var(--color-border);
             font-size: 0.88rem;
+            gap: 10px;
         }
 
         .history-item:last-child { border-bottom: none; }
 
         .history-item .h-amount { font-weight: 700; color: var(--color-primary-dark); }
         .history-item .h-meta { color: var(--color-muted); font-size: 0.8rem; }
-        .status-draft  { background-color: #fef7e0; color: #b06000; }
 
         .table-empty {
             text-align: center;
@@ -470,6 +493,7 @@
             color: var(--color-dark);
             margin-bottom: 5px;
             line-height: 1.5;
+            margin-top: 0;
         }
 
         .notif-item span {
@@ -555,6 +579,7 @@
             font-weight: 700;
             font-size: 1rem;
             color: var(--color-dark);
+            margin: 0;
         }
 
         .avatar-hint {
@@ -562,6 +587,7 @@
             color: var(--color-muted);
             line-height: 1.4;
             max-width: 180px;
+            margin: 0;
         }
 
         .form-group {
@@ -587,6 +613,8 @@
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
             font-family: inherit;
+            box-sizing: border-box;
+            width: 100%;
         }
 
         .form-group input:focus {
@@ -645,16 +673,159 @@
         }
 
         @media (max-width: 768px) {
-            .welcome-banner { padding: 22px 20px; }
-            .tab-nav { padding: 0 15px; overflow-x: auto; }
-            .page-content { padding: 25px 18px; }
-            .profile-layout { grid-template-columns: 1fr; }
-            .form-row-2 { grid-template-columns: 1fr; }
+            .welcome-banner { 
+                padding: 22px 20px; 
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .welcome-actions {
+                width: 100%;
+            }
+
+            .welcome-actions .btn-action, 
+            .welcome-actions .btn-logout { 
+                flex: 1;
+                min-width: 130px;
+                text-align: center; 
+            }
+
+            .tab-nav { 
+                padding: 0 10px; 
+            }
+
+            .tab-btn {
+                padding: 14px 16px;
+                font-size: 0.88rem;
+            }
+
+            .page-content { 
+                padding: 20px 15px; 
+            }
+
+            .dash-card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .funds-summary-card {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .btn-withdraw-main {
+                width: 100%;
+                text-align: center;
+            }
+
+            .profile-layout { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .avatar-card {
+                order: -1;
+            }
+
+            .form-row-2 { 
+                grid-template-columns: 1fr; 
+                gap: 0;
+            }
+
+            .btn-row {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-row .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .posts-table, 
+            .posts-table thead, 
+            .posts-table tbody, 
+            .posts-table th, 
+            .posts-table td, 
+            .posts-table tr { 
+                display: block; 
+            }
+
+            .posts-table thead tr { 
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .posts-table tr {
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                margin-bottom: 15px;
+                padding: 10px;
+                background-color: var(--color-surface);
+            }
+            
+            .posts-table tr:last-child {
+                margin-bottom: 0;
+            }
+
+            .posts-table td { 
+                border: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05); 
+                position: relative;
+                padding-left: 45%; 
+                text-align: right;
+                font-size: 0.9rem;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .posts-table td:last-child {
+                border-bottom: none;
+            }
+
+            .posts-table td::before { 
+                position: absolute;
+                top: 10px;
+                left: 12px;
+                width: 40%; 
+                padding-right: 10px; 
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 700;
+                color: var(--color-muted);
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+            }
+
+            .posts-table td:nth-of-type(1)::before { content: "Campaign"; }
+            .posts-table td:nth-of-type(2)::before { content: "Raised"; }
+            .posts-table td:nth-of-type(3)::before { content: "Goal"; }
+            .posts-table td:nth-of-type(4)::before { content: "Deadline"; }
+            .posts-table td:nth-of-type(5)::before { content: "Status"; }
+            .posts-table td:nth-of-type(6)::before { content: "Actions"; }
+            
+            .posts-table td a, 
+            .posts-table td .status-pill, 
+            .posts-table td .btn-withdraw {
+                display: inline-block;
+            }
         }
 
         @media (max-width: 480px) {
-            .welcome-actions { width: 100%; }
-            .btn-action, .btn-logout { width: 100%; text-align: center; }
+            .welcome-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .welcome-actions .btn-action, 
+            .welcome-actions .btn-logout {
+                width: 100%;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
